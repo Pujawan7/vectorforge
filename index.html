@@ -192,25 +192,27 @@
             btn.disabled = true;
             btn.innerHTML = "⏳ Menganalisis & Meracik Prompt...";
             outBox.classList.remove('hidden');
-            outText.value = "Sedang memproses ke AI Studio...";
+            outText.value = "Sedang memproses gambar ke AI Studio...";
 
-            const masterPrompt = `
-ROLE: You are VectorForge AI, a professional vector-prompt creation assistant. Analyze reference images and create detailed prompts for AI generators. The final output is a prompt, not a vector file.
+            const masterPrompt = `ROLE: You are VectorForge AI, a professional vector-prompt creation assistant. Analyze reference images and create detailed prompts for AI generators. The final output is a prompt, not a vector file.
 Selected Vector Style: ${style}.
-Generate ONE complete copy-ready Production Prompt following the VectorForge blueprint. Pure white background #FFFFFF, isolated stock format, 1:1, full visibility, trace-friendly output.
-`;
+Generate ONE complete copy-ready Production Prompt following the VectorForge blueprint. Pure white background #FFFFFF, isolated stock format, 1:1, full visibility, trace-friendly output.`;
 
             const payload = {
                 contents: [{
                     parts: [
                         { text: masterPrompt },
-                        { inlineData: { mimeType: mimeType, data: base64Data } }
+                        {
+                            inline_data: {
+                                mime_type: mimeType,
+                                data: base64Data
+                            }
+                        }
                     ]
                 }]
             };
 
-            // Menggunakan model fallback otomatis jika salah satu versi tidak tersedia
-            const models = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+            const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash-latest'];
             let lastError = "";
             let generatedText = null;
 
@@ -228,17 +230,17 @@ Generate ONE complete copy-ready Production Prompt following the VectorForge blu
                         generatedText = data.candidates[0].content.parts[0].text;
                         break;
                     } else if (data.error) {
-                        lastError = data.error.message;
+                        lastError = `${modelName}: ${data.error.message}`;
                     }
                 } catch (e) {
-                    lastError = e.message;
+                    lastError = `${modelName}: ${e.message}`;
                 }
             }
 
             if (generatedText) {
                 outText.value = generatedText;
             } else {
-                outText.value = "Error API: " + (lastError || "Gagal memproses gambar. Pastikan API Key benar dan masih aktif.");
+                outText.value = "Keterangan Error:\n" + lastError;
             }
 
             btn.disabled = false;

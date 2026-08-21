@@ -21,7 +21,10 @@
                 <p class="text-xs text-slate-400">Vector Prompt Assistant</p>
             </div>
         </div>
-        <span id="badge-status" class="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">Terkunci</span>
+        <div class="flex items-center gap-2">
+            <span id="badge-status" class="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">Terkunci</span>
+            <button onclick="openSettings()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm" title="Pengaturan API">⚙️</button>
+        </div>
     </header>
 
     <!-- SCREEN 1: PASSWORD GATE -->
@@ -40,7 +43,7 @@
         <p id="auth-err" class="text-xs text-rose-400 text-center hidden">Password salah! Silakan cek kembali.</p>
     </div>
 
-    <!-- SCREEN 2: TOOL GENERATOR (Hidden awal) -->
+    <!-- SCREEN 2: TOOL GENERATOR -->
     <div id="tool-box" class="w-full max-w-lg space-y-5 hidden">
         
         <!-- STEP 1: UPLOAD -->
@@ -103,12 +106,41 @@
 
     </div>
 
+    <!-- MODAL SETTINGS -->
+    <div id="modal-settings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 max-w-sm w-full rounded-2xl p-5 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">⚙️ Pengaturan API Key</h3>
+            <p class="text-xs text-slate-400">Masukkan Gemini API Key dari Google AI Studio. Kunci disimpan lokal di browser Anda.</p>
+            <input type="password" id="key-input" placeholder="Tempel API Key di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+            <div class="flex gap-2">
+                <button onclick="saveSettings()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-xl text-xs">Simpan</button>
+                <button onclick="closeSettings()" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs">Batal</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- PENGATURAN KUNCI ---
         const APP_PASSWORD = "VFACCESS2026";
-        
-        // TEMPELKAN API KEY GOOGLE AI STUDIO ANDA DI BAWAH INI:
-        const GEMINI_API_KEY = "TEMPEL_API_KEY_ANDA_DI_SINI";
+        let savedKey = localStorage.getItem("gemini_key") || "";
+
+        function openSettings() {
+            document.getElementById('key-input').value = savedKey;
+            document.getElementById('modal-settings').classList.remove('hidden');
+        }
+
+        function closeSettings() {
+            document.getElementById('modal-settings').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            const val = document.getElementById('key-input').value.trim();
+            if (val) {
+                localStorage.setItem("gemini_key", val);
+                savedKey = val;
+                alert("API Key berhasil disimpan!");
+            }
+            closeSettings();
+        }
 
         let base64Data = null;
         let mimeType = "image/jpeg";
@@ -141,6 +173,12 @@
         }
 
         async function generateVectorPrompt() {
+            if (!savedKey) {
+                alert("Silakan klik ikon ⚙️ di pojok kanan atas untuk memasukkan Gemini API Key terlebih dahulu!");
+                openSettings();
+                return;
+            }
+
             if (!base64Data) {
                 alert("Silakan pilih/upload gambar referensi terlebih dahulu!");
                 return;
@@ -171,7 +209,7 @@ Generate ONE complete copy-ready Production Prompt following the VectorForge blu
             };
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

@@ -101,7 +101,7 @@
                     Salin Prompt
                 </button>
             </div>
-            <textarea id="prompt-result" rows="10" readonly class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none"></textarea>
+            <textarea id="prompt-result" rows="12" readonly class="w-full bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none"></textarea>
         </div>
 
     </div>
@@ -111,7 +111,7 @@
         <div class="bg-slate-900 border border-slate-800 max-w-sm w-full rounded-2xl p-5 space-y-4">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">⚙️ Pengaturan API Key</h3>
             <p class="text-xs text-slate-400">Masukkan Gemini API Key dari Google AI Studio. Kunci disimpan lokal di browser Anda.</p>
-            <input type="password" id="key-input" placeholder="Tempel API Key di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+            <input type="password" id="key-input" placeholder="AIzaSy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
             <div class="flex gap-2">
                 <button onclick="saveSettings()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-xl text-xs">Simpan</button>
                 <button onclick="closeSettings()" class="px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs">Batal</button>
@@ -162,7 +162,7 @@
         function previewImg(e) {
             const file = e.target.files[0];
             if (!file) return;
-            mimeType = file.type;
+            mimeType = file.type || "image/jpeg";
             const reader = new FileReader();
             reader.onload = (event) => {
                 base64Data = event.target.result.split(',')[1];
@@ -190,13 +190,14 @@
             const outText = document.getElementById('prompt-result');
 
             btn.disabled = true;
-            btn.innerHTML = "⏳ Sedang Menganalisis & Meracik Prompt...";
-            outBox.classList.add('hidden');
+            btn.innerHTML = "⏳ Menganalisis & Meracik Prompt...";
+            outBox.classList.remove('hidden');
+            outText.value = "Sedang memproses ke AI Studio...";
 
             const masterPrompt = `
-You are VectorForge AI, a professional vector-prompt creation assistant. Analyze reference images and create detailed prompts for AI generators. The final output is a prompt, not a vector file.
+ROLE: You are VectorForge AI, a professional vector-prompt creation assistant. Analyze reference images and create detailed prompts for AI generators. The final output is a prompt, not a vector file.
 Selected Vector Style: ${style}.
-Generate ONE complete copy-ready Production Prompt following the VectorForge blueprint. Pure white background, isolated stock format, full visibility. Output text only.
+Generate ONE complete copy-ready Production Prompt following the VectorForge blueprint. Pure white background #FFFFFF, isolated stock format, 1:1, full visibility, trace-friendly output.
 `;
 
             const payload = {
@@ -208,24 +209,40 @@ Generate ONE complete copy-ready Production Prompt following the VectorForge blu
                 }]
             };
 
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${savedKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            // Menggunakan model fallback otomatis jika salah satu versi tidak tersedia
+            const models = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+            let lastError = "";
+            let generatedText = null;
 
-                const data = await res.json();
-                const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Gagal membuat prompt.";
+            for (const modelName of models) {
+                try {
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${savedKey}`;
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
 
-                outText.value = resultText;
-                outBox.classList.remove('hidden');
-            } catch (err) {
-                alert("Terjadi kesalahan: " + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = "⚡ Generate Vector Prompt";
+                    const data = await res.json();
+                    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+                        generatedText = data.candidates[0].content.parts[0].text;
+                        break;
+                    } else if (data.error) {
+                        lastError = data.error.message;
+                    }
+                } catch (e) {
+                    lastError = e.message;
+                }
             }
+
+            if (generatedText) {
+                outText.value = generatedText;
+            } else {
+                outText.value = "Error API: " + (lastError || "Gagal memproses gambar. Pastikan API Key benar dan masih aktif.");
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = "⚡ Generate Vector Prompt";
         }
 
         function copyToClipboard() {

@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
 import google.generativeai as genai
-import io
 
 # ------------------------ PAGE CONFIG ------------------------
 st.set_page_config(
@@ -11,76 +10,74 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ------------------------ CUSTOM CSS (Modern Card Dashboard) ------------------------
+# ------------------------ CUSTOM CSS (Modern, Clean, Card) ------------------------
 st.markdown("""
 <style>
-    /* Reset & base */
+    /* Global */
     .main {
-        background-color: #f8fafc;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9edf4 100%);
     }
     .block-container {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-    }
-    /* Cards */
-    .card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.8rem;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 1.5rem;
-        border: 1px solid #e9edf4;
-        transition: 0.2s;
-    }
-    .card:hover {
-        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-    .card-title {
-        font-weight: 600;
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        color: #0b1e33;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
     /* Header */
     .header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #e9edf4;
+        padding: 0.5rem 0 1rem 0;
+        border-bottom: 2px solid rgba(79,125,243,0.15);
         margin-bottom: 2rem;
     }
     .logo {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #1e2a4a;
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #1e2a4a 0%, #4f7df3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         letter-spacing: -0.5px;
     }
     .logo span {
-        color: #4f7df3;
+        background: linear-gradient(135deg, #4f7df3 0%, #9b59b6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .badge {
-        background: #eef2ff;
-        color: #4f7df3;
-        padding: 0.3rem 1rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-    /* Buttons */
-    .stButton button {
         background: #4f7df3;
-        color: white !important;
-        border: none;
-        border-radius: 10px;
-        padding: 0.5rem 2rem;
-        font-weight: 500;
-        transition: 0.2s;
-        width: 100%;
+        color: white;
+        padding: 0.3rem 1.2rem;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(79,125,243,0.3);
+        letter-spacing: 0.3px;
     }
-    .stButton button:hover {
-        background: #3b64d4;
-        box-shadow: 0 4px 12px rgba(79,125,243,0.3);
+    /* Cards */
+    .card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.8rem 1.8rem 1.5rem 1.8rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(0,0,0,0.03);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+    }
+    .card-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #0b1e33;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .card-title .icon {
+        font-size: 1.4rem;
     }
     /* Upload area */
     .upload-area {
@@ -90,6 +87,26 @@ st.markdown("""
         text-align: center;
         background: #fafcff;
         color: #8896ab;
+        font-size: 0.95rem;
+    }
+    /* Buttons */
+    .stButton button {
+        background: linear-gradient(135deg, #4f7df3 0%, #3b64d4 100%);
+        color: white !important;
+        border: none;
+        border-radius: 12px;
+        padding: 0.6rem 2rem;
+        font-weight: 600;
+        transition: 0.3s;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(79,125,243,0.25);
+    }
+    .stButton button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(79,125,243,0.4);
+    }
+    .stButton button:active {
+        transform: scale(0.98);
     }
     /* Prompt output */
     .prompt-box {
@@ -97,48 +114,51 @@ st.markdown("""
         border-radius: 12px;
         padding: 1.5rem;
         font-family: 'Courier New', monospace;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         white-space: pre-wrap;
-        border-left: 4px solid #4f7df3;
-        margin-top: 1rem;
-        max-height: 500px;
+        border-left: 5px solid #4f7df3;
+        margin: 0.5rem 0 1rem 0;
+        max-height: 450px;
         overflow-y: auto;
-    }
-    .copy-btn {
-        background: #e9edf4;
-        border: none;
-        border-radius: 8px;
-        padding: 0.3rem 1.2rem;
-        font-size: 0.8rem;
-        color: #1e2a4a;
-        cursor: pointer;
-        margin-top: 0.5rem;
-    }
-    .copy-btn:hover {
-        background: #d1d9e6;
+        line-height: 1.6;
     }
     /* Footer */
     .footer {
         text-align: center;
         margin-top: 3rem;
-        padding-top: 1.5rem;
+        padding-top: 1.2rem;
         border-top: 1px solid #e9edf4;
         color: #8896ab;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
     /* Password gate */
     .login-box {
         max-width: 420px;
-        margin: 6rem auto;
+        margin: 8rem auto;
         text-align: center;
     }
     .login-box h1 {
-        font-weight: 700;
-        color: #1e2a4a;
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #1e2a4a 0%, #4f7df3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .login-box p {
         color: #66758a;
         margin-bottom: 2rem;
+    }
+    /* Style select */
+    .stSelectbox > div > div {
+        border-radius: 12px;
+        border: 1px solid #e9edf4;
+    }
+    /* Make file uploader nicer */
+    .stFileUploader > div > button {
+        background: #f8fafc !important;
+        border: 1px solid #e9edf4 !important;
+        border-radius: 12px !important;
+        color: #1e2a4a !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -150,7 +170,7 @@ if "generated_prompt" not in st.session_state:
     st.session_state.generated_prompt = ""
 
 # ------------------------ PASSWORD GATE ------------------------
-PASSWORD = "VFACCESS2026"   # Ganti dengan kode Anda
+PASSWORD = "VFACCESS2026"   # Ganti dengan kode akses Anda
 
 def login():
     st.markdown("""
@@ -175,8 +195,7 @@ if not st.session_state.authenticated:
 
 # ------------------------ GEMINI SETUP ------------------------
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-# Use a vision-capable model (adjust as needed)
-model = genai.GenerativeModel('gemini-3.6-flash')   # or 'gemini-1.5-flash'
+model = genai.GenerativeModel('gemini-3.6-flash')   # Sesuai permintaan
 
 # ------------------------ MASTER SYSTEM INSTRUCTION (REVISED) ------------------------
 SYSTEM_INSTRUCTION = """
@@ -235,7 +254,7 @@ ADDITIONAL RULES:
 - The prompt must be copy-ready, with concrete instructions for the AI generator.
 """
 
-# ------------------------ STYLE CATALOG (for selectbox) ------------------------
+# ------------------------ STYLE CATALOG ------------------------
 STYLES_CATALOG = [
     "01 — Clean Flat Vector", "02 — Minimal Vector", "03 — Geometric Vector",
     "04 — Premium Stock Vector", "05 — Paper Cut Vector", "06 — Isometric Vector",
@@ -248,17 +267,15 @@ STYLES_CATALOG = [
     "25 — Engraved Vector", "26 — Pixel Grid Vector"
 ]
 
-# ------------------------ MAIN APP UI ------------------------
-# Header
+# ------------------------ MAIN UI ------------------------
+# HEADER
 col1, col2 = st.columns([3, 1])
 with col1:
-    st.markdown('<div class="logo">Vector<span>Forge</span> AI</div>', unsafe_allow_html=True)
+    st.markdown('<div class="header"><div class="logo">Vector<span>Forge</span> AI</div></div>', unsafe_allow_html=True)
 with col2:
     st.markdown('<div class="badge">⚡ Prompt Studio</div>', unsafe_allow_html=True)
 
-st.markdown("---")
-
-# Two-column layout
+# TWO-COLUMN LAYOUT
 left_col, right_col = st.columns([1, 1.2], gap="large")
 
 # ========== LEFT COLUMN ==========
@@ -266,36 +283,37 @@ with left_col:
     # Card: Upload
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title">📤 Upload Reference Image</div>', unsafe_allow_html=True)
-        uploaded_file = st.file_uploader("Drag & drop or click to browse", type=["jpg", "jpeg", "png", "webp"])
+        st.markdown('<div class="card-title"><span class="icon">📤</span> Upload Image</div>', unsafe_allow_html=True)
+        uploaded_file = st.file_uploader(" ", type=["jpg", "jpeg", "png", "webp"], label_visibility="collapsed")
         if uploaded_file is not None:
             image = Image.open(uploaded_file)
             st.image(image, caption="Preview", use_container_width=True)
             st.session_state.uploaded_image = image
         else:
-            st.markdown('<div class="upload-area">No image uploaded yet</div>', unsafe_allow_html=True)
+            st.markdown('<div class="upload-area">Drop your image here or click to browse</div>', unsafe_allow_html=True)
             st.session_state.uploaded_image = None
         st.markdown('</div>', unsafe_allow_html=True)
 
     # Card: Style selection
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title">🎯 Select Vector Style</div>', unsafe_allow_html=True)
-        selected_style = st.selectbox("Choose a style", STYLES_CATALOG, index=0)
-        st.caption(f"📖 {selected_style.split('—')[1].strip() if '—' in selected_style else selected_style}")
+        st.markdown('<div class="card-title"><span class="icon">🎯</span> Select Style</div>', unsafe_allow_html=True)
+        selected_style = st.selectbox(" ", STYLES_CATALOG, index=0, label_visibility="collapsed")
+        # Show short description
+        style_desc = selected_style.split('—')[1].strip() if '—' in selected_style else selected_style
+        st.caption(f"📖 {style_desc}")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # Card: Generate button
+    # Card: Generate
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title">⚡ Generate Prompt</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-title"><span class="icon">⚡</span> Generate</div>', unsafe_allow_html=True)
         generate_btn = st.button("Generate Production Prompt", use_container_width=True)
         if generate_btn:
             if st.session_state.uploaded_image is None:
                 st.error("Please upload an image first.")
             else:
                 with st.spinner("🧠 Analyzing image and crafting prompt..."):
-                    # Prepare user prompt
                     user_prompt = f"""
                     Style selected by user: {selected_style}.
                     Generate a complete Production Prompt following the VectorForge Master Instruction and the blueprint for this style.
@@ -311,18 +329,26 @@ with left_col:
 
 # ========== RIGHT COLUMN ==========
 with right_col:
-    st.markdown('<div class="card" style="min-height: 500px;">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📋 Generated Prompt</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card" style="min-height: 450px;">', unsafe_allow_html=True)
+    st.markdown('<div class="card-title"><span class="icon">📋</span> Generated Prompt</div>', unsafe_allow_html=True)
 
     if st.session_state.generated_prompt:
-        # Display prompt in a styled box
-        st.markdown(f'<div class="prompt-box">{st.session_state.generated_prompt}</div>', unsafe_allow_html=True)
-        # Copy button with JavaScript
-        st.markdown("""
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.querySelector('.prompt-box').innerText); alert('✅ Copied to clipboard!')">
-            📋 Copy to clipboard
-        </button>
-        """, unsafe_allow_html=True)
+        prompt_text = st.session_state.generated_prompt
+        # Display in a styled div
+        st.markdown(f'<div class="prompt-box">{prompt_text}</div>', unsafe_allow_html=True)
+
+        # Copy button using custom HTML + JavaScript
+        # We need to escape the prompt text for JS string
+        escaped_prompt = prompt_text.replace("'", "\\'").replace('"', '\\"').replace('\n', '\\n')
+        copy_html = f"""
+        <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+            <button onclick="navigator.clipboard.writeText(`{escaped_prompt}`).then(() => alert('✅ Copied to clipboard!')).catch(() => alert('Copy failed.'))" 
+                    style="background: #e9edf4; border: none; border-radius: 8px; padding: 0.4rem 1.5rem; font-size: 0.85rem; color: #1e2a4a; cursor: pointer; font-weight: 500;">
+                📋 Copy to clipboard
+            </button>
+        </div>
+        """
+        st.components.v1.html(copy_html, height=60)
 
         # Additional instructions (outside prompt)
         st.markdown("---")
@@ -344,5 +370,5 @@ with right_col:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Footer
-st.markdown('<div class="footer">VectorForge AI © 2026 · Built with Streamlit · All vector styles v5 revised</div>', unsafe_allow_html=True)
+# ------------------------ FOOTER ------------------------
+st.markdown('<div class="footer">VectorForge AI © 2025 · Built with Streamlit · All vector styles v5 revised</div>', unsafe_allow_html=True)

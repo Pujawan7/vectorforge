@@ -176,7 +176,7 @@ if not st.session_state.authenticated:
 # ------------------------ GEMINI SETUP ------------------------
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 # Use a vision-capable model (adjust as needed)
-model = genai.GenerativeModel('gemini-1.5-pro')   # or 'gemini-1.5-flash'
+model = genai.GenerativeModel('gemini-3.6-flash')   # or 'gemini-1.5-flash'
 
 # ------------------------ MASTER SYSTEM INSTRUCTION (REVISED) ------------------------
 SYSTEM_INSTRUCTION = """
@@ -345,4 +345,4 @@ with right_col:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
-st.markdown('<div class="footer">VectorForge AI © 2025 · Built with Streamlit · All vector styles v5 revised</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer">VectorForge AI © 2026 · Built with Streamlit · All vector styles v5 revised</div>', unsafe_allow_html=True)

@@ -97,7 +97,7 @@ st.success("Akses Terverifikasi. Selamat Datang!")
 
 # --- 2. SETUP GEMINI CONFIGURATION ---
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-model = genai.GenerativeModel('gemini-2.5-flash')
+model = genai.GenerativeModel('gemini-3.6-flash')
 
 # --- 3. INPUT FORM ---
 uploaded_file = st.file_uploader("📷 1. Upload Gambar Referensi (JPG / PNG / WebP):", type=["jpg", "jpeg", "png", "webp"])

@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from google import genai
+import google.generativeai as genai
 
 st.set_page_config(page_title="VectorForge AI Prompter", layout="centered")
 
@@ -69,7 +69,6 @@ STYLE ENGINE BLUEPRINT SOURCE:
 26 - Pixel Grid Vector: uniform square blocks, jagged pixel edges, retro digital.
 """
 
-# Daftar 26 Gaya VectorForge
 STYLES_CATALOG = [
     "01 — Clean Flat Vector", "02 — Minimal Vector", "03 — Geometric Vector",
     "04 — Premium Stock Vector", "05 — Paper Cut Vector", "06 — Isometric Vector",
@@ -83,7 +82,7 @@ STYLES_CATALOG = [
 ]
 
 # --- 1. PASSWORD GATE ---
-PASSWORD_RAHASIA = "VFACCESS2026"  # Ganti dengan password yang Anda berikan ke pembeli Payhip
+PASSWORD_RAHASIA = "VFACCESS2026"
 
 st.title("⚡ VectorForge AI")
 st.caption("Professional Vector-Prompt Creation Assistant")
@@ -96,8 +95,9 @@ if akses_input != PASSWORD_RAHASIA:
 
 st.success("Akses Terverifikasi. Selamat Datang!")
 
-# --- 2. SETUP GEMINI CLIENT ---
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+# --- 2. SETUP GEMINI CONFIGURATION ---
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # --- 3. INPUT FORM ---
 uploaded_file = st.file_uploader("📷 1. Upload Gambar Referensi (JPG / PNG / WebP):", type=["jpg", "jpeg", "png", "webp"])
@@ -109,17 +109,15 @@ if uploaded_file is not None:
     st.image(img, caption="Preview Referensi", use_container_width=True)
 
     if st.button("⚡ Generate Vector Prompt"):
-        with st.spinner("Sedang menganalisis referensi dan mengonstruksi prompt vektor..."):
+        with st.spinner("Sedang menganalisis referensi dan meracik prompt vektor..."):
             user_task = f"""
             Gaya vektor yang dipilih oleh user adalah: {selected_style}.
             Buat Production Prompt lengkap sesuai Master Instruction VectorForge dan blueprint gaya tersebut.
             """
             
-            response = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=[img, VECTORFORGE_MASTER_INSTRUCTION, user_task]
-            )
-            
-            st.subheader("📋 Production Prompt Siap Pakai:")
-            st.code(response.text, language="text")
-          
+            try:
+                response = model.generate_content([VECTORFORGE_MASTER_INSTRUCTION, img, user_task])
+                st.subheader("📋 Production Prompt Siap Pakai:")
+                st.code(response.text, language="text")
+            except Exception as e:
+                st.error(f"Terjadi kesalahan saat memproses API: {e}")

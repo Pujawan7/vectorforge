@@ -111,6 +111,16 @@
             pointer-events: none;
         }
         .toast.show { opacity: 1; }
+        /* Perbaikan dropdown agar teks tidak bertumpuk */
+        select option {
+            padding: 4px 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        select {
+            max-width: 100%;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4">
@@ -204,8 +214,9 @@
                                 <option value="16">16 — Mid-Century Modern Vector</option>
                                 <option value="17">17 — Luxury Line Vector</option>
                                 <option value="18">18 — Organic Flat Vector</option>
-                                <option value="19">19 — Modular Segmentation (Infographic)</option>
-                                <option value="20">20 — Precision Engineering (Technical)</option>
+                                <!-- Judul dipendekkan agar tidak bertumpuk -->
+                                <option value="19">19 — Modular Segmentation</option>
+                                <option value="20">20 — Precision Engineering</option>
                                 <option value="21">21 — Duotone Vector</option>
                                 <option value="22">22 — Collage Vector</option>
                                 <option value="23">23 — Gradient Vector</option>
@@ -283,8 +294,9 @@
                         <option value="16">16 — Mid-Century Modern Vector</option>
                         <option value="17">17 — Luxury Line Vector</option>
                         <option value="18">18 — Organic Flat Vector</option>
-                        <option value="19">19 — Modular Segmentation (Infographic)</option>
-                        <option value="20">20 — Precision Engineering (Technical)</option>
+                        <!-- Judul dipendekkan agar tidak bertumpuk -->
+                        <option value="19">19 — Modular Segmentation</option>
+                        <option value="20">20 — Precision Engineering</option>
                         <option value="21">21 — Duotone Vector</option>
                         <option value="22">22 — Collage Vector</option>
                         <option value="23">23 — Gradient Vector</option>
@@ -341,7 +353,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: LOGO GENERATOR (UPDATED) -->
+            <!-- TAB 4: LOGO GENERATOR -->
             <div id="tab4" class="tab-content hidden">
                 <div class="card p-6 space-y-4 max-w-2xl mx-auto">
                     <h3 class="text-lg font-bold">🏷️ Logo Prompt Generator</h3>

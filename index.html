@@ -3,22 +3,35 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VectorForge AI</title>
+    <title>VectorForge AI – Full Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #e2e8f0; }
         .gradient-bg { background: linear-gradient(135deg, #0f172a, #1e293b); }
-        .card { background: #1e293b; border: 1px solid #334155; border-radius: 1.5rem; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 1.5rem; transition: 0.2s; }
+        .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
         .btn-primary {
             background: linear-gradient(135deg, #f59e0b, #f97316);
             color: #0f172a;
             font-weight: 700;
-            transition: all 0.2s;
+            transition: 0.2s;
         }
         .btn-primary:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tab-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            background: transparent;
+            color: #94a3b8;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .tab-btn.active { background: #f59e0b; color: #0f172a; }
+        .tab-btn:hover:not(.active) { background: #334155; color: #f1f5f9; }
         .prompt-box {
             background: #0f172a;
             border: 1px solid #334155;
@@ -27,7 +40,7 @@
             font-size: 0.75rem;
             line-height: 1.6;
             white-space: pre-wrap;
-            max-height: 400px;
+            max-height: 350px;
             overflow-y: auto;
         }
         .instagram-float {
@@ -50,15 +63,6 @@
             transition: transform 0.2s;
         }
         .instagram-float a:hover { transform: scale(1.1); }
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #94a3b8;
-        }
-        .password-toggle:hover { color: #f59e0b; }
         .loader {
             border: 4px solid #334155;
             border-top: 4px solid #f59e0b;
@@ -69,21 +73,36 @@
             margin: 0 auto;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .fade-in { animation: fadeIn 0.4s ease; }
+        .fade-in { animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .info-note {
             background: #1e293b;
             border-left: 4px solid #f59e0b;
             padding: 0.75rem 1rem;
             border-radius: 0.75rem;
-            margin-top: 1rem;
             font-size: 0.8rem;
             color: #cbd5e1;
         }
-        .info-note strong { color: #f59e0b; }
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+        .style-tag {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            transition: 0.2s;
+            cursor: default;
+        }
+        .style-tag:hover { background: #334155; color: #f59e0b; border-color: #f59e0b; }
+        .style-tag strong { color: #e2e8f0; }
     </style>
 </head>
-<body class="gradient-bg text-slate-200 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center p-4">
 
     <!-- INSTAGRAM FLOAT -->
     <div class="instagram-float">
@@ -93,131 +112,235 @@
     </div>
 
     <!-- MAIN CONTAINER -->
-    <div class="w-full max-w-2xl">
+    <div class="w-full max-w-4xl">
 
-        <!-- ====== PASSWORD GATE ====== -->
-        <div id="auth-box" class="card p-6 md:p-8 shadow-2xl space-y-4">
+        <!-- HEADER -->
+        <div class="flex items-center justify-between py-4 border-b border-slate-800 mb-6">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center text-2xl font-black shadow-lg shadow-amber-500/20">⚡</div>
+                <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center text-xl font-black shadow-lg shadow-amber-500/20">⚡</div>
                 <div>
-                    <h1 class="text-2xl font-bold text-amber-400">VectorForge AI</h1>
-                    <p class="text-xs text-slate-400">Professional Prompt Studio</p>
+                    <h1 class="text-xl font-bold text-amber-400">VectorForge AI</h1>
+                    <p class="text-xs text-slate-400">Prompt Studio · 4 Tools</p>
                 </div>
             </div>
-            <h2 class="text-lg font-semibold">🔐 Access for Purchasers</h2>
-            <p class="text-sm text-slate-400">Enter your Payhip access code to unlock the generator.</p>
-
-            <div class="relative">
-                <input type="password" id="pass-input" placeholder="Enter your code..." 
-                       class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 pr-12 text-sm text-white focus:outline-none focus:border-amber-500"/>
-                <span class="password-toggle" onclick="togglePassword()">
-                    <i id="pass-eye" class="fas fa-eye"></i>
-                </span>
-            </div>
-
-            <button onclick="loginApp()" class="w-full btn-primary py-3 rounded-xl text-base">
-                Unlock Tools
-            </button>
-
-            <div id="auth-err" class="text-rose-400 text-sm hidden">❌ Incorrect code. Please check your Payhip email or contact support via Instagram DM.</div>
-
-            <div class="text-xs text-slate-500 text-center border-t border-slate-700 pt-3 mt-2">
-                Having trouble? Check your Payhip email or DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a> on Instagram.
+            <div class="flex items-center gap-2">
+                <span id="badge-status" class="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">Locked</span>
+                <button onclick="openPasswordModal()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm" title="Access">🔑</button>
             </div>
         </div>
 
-        <!-- ====== TOOLS ====== -->
-        <div id="tool-box" class="hidden space-y-5">
+        <!-- PASSWORD GATE -->
+        <div id="auth-box" class="card p-6 md:p-8 shadow-2xl space-y-4 max-w-md mx-auto">
+            <h2 class="text-xl font-bold text-center">🔐 Access Required</h2>
+            <p class="text-xs text-slate-400 text-center">Enter your Payhip access code to unlock all tools.</p>
+            <div class="relative">
+                <input type="password" id="pass-input" placeholder="Enter your code..." 
+                       class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 pr-12 text-sm text-white focus:outline-none focus:border-amber-500"/>
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-amber-400" onclick="togglePassword()">
+                    <i id="pass-eye" class="fas fa-eye"></i>
+                </span>
+            </div>
+            <button onclick="loginApp()" class="w-full btn-primary py-3 rounded-xl text-base">Unlock Tools</button>
+            <div id="auth-err" class="text-rose-400 text-sm hidden">❌ Incorrect code. Please check your Payhip email or DM @rudy.pujawan on Instagram.</div>
+            <div class="text-xs text-slate-500 text-center border-t border-slate-700 pt-3">Need help? DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a></div>
+        </div>
 
-            <!-- STEP 1: UPLOAD -->
-            <div class="card p-5 space-y-3">
-                <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">1.</span> Upload Reference Image</h3>
-                <input type="file" id="img-input" accept="image/*" onchange="previewImg(event)" 
-                       class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-amber-400 hover:file:bg-slate-600 cursor-pointer"/>
-                <div id="preview-wrapper" class="hidden text-center pt-2">
-                    <img id="img-view" class="max-h-52 mx-auto rounded-xl border border-slate-700 object-contain shadow-md"/>
-                </div>
+        <!-- TOOLS -->
+        <div id="tool-box" class="hidden space-y-6">
+
+            <!-- TAB NAVIGATION -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+                <button class="tab-btn active" data-tab="tab1" onclick="switchTab('tab1')">🎨 Image → Prompt</button>
+                <button class="tab-btn" data-tab="tab2" onclick="switchTab('tab2')">✍️ Prompt Enhancer</button>
+                <button class="tab-btn" data-tab="tab3" onclick="switchTab('tab3')">📚 Style Reference</button>
+                <button class="tab-btn" data-tab="tab4" onclick="switchTab('tab4')">💡 Quick Tips</button>
             </div>
 
-            <!-- STEP 2: SELECT STYLE -->
-            <div class="card p-5 space-y-3">
-                <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">2.</span> Choose Vector Style (26)</h3>
-                <select id="style-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
-                    <option value="">-- Select a style --</option>
-                    <option value="01">01 — Clean Flat Vector</option>
-                    <option value="02">02 — Minimal Vector</option>
-                    <option value="03">03 — Geometric Vector</option>
-                    <option value="04">04 — Premium Stock Vector</option>
-                    <option value="05">05 — Paper Cut Vector</option>
-                    <option value="06">06 — Isometric Vector</option>
-                    <option value="07">07 — Low Poly Vector</option>
-                    <option value="08">08 — Monoline Vector</option>
-                    <option value="09">09 — Bold Poster Vector</option>
-                    <option value="10">10 — Sticker Vector</option>
-                    <option value="11">11 — Cute Friendly Vector</option>
-                    <option value="12">12 — Mascot Vector</option>
-                    <option value="13">13 — Hand-Drawn Vector</option>
-                    <option value="14">14 — Editorial Vector</option>
-                    <option value="15">15 — Retro Commercial Vector</option>
-                    <option value="16">16 — Mid-Century Modern Vector</option>
-                    <option value="17">17 — Luxury Line Vector</option>
-                    <option value="18">18 — Organic Flat Vector</option>
-                    <option value="19">19 — Infographic Vector</option>
-                    <option value="20">20 — Technical Vector</option>
-                    <option value="21">21 — Duotone Vector</option>
-                    <option value="22">22 — Collage Vector</option>
-                    <option value="23">23 — Gradient Vector</option>
-                    <option value="24">24 — Pop Graphic Vector</option>
-                    <option value="25">25 — Engraved Vector</option>
-                    <option value="26">26 — Pixel Grid Vector</option>
-                </select>
-            </div>
-
-            <!-- GENERATE BUTTON -->
-            <button id="btn-run" onclick="generatePrompt()" disabled
-                    class="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2">
-                <span>⚡ Generate Prompt</span>
-            </button>
-
-            <!-- OUTPUT -->
-            <div id="output-box" class="card p-5 space-y-3 hidden fade-in">
-                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-                    <h3 class="text-sm font-bold">📋 Production Prompt</h3>
-                    <button onclick="copyPrompt()" id="btn-copy" 
-                            class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition">
-                        <i class="fas fa-copy mr-1"></i> Copy
-                    </button>
-                </div>
-                <div id="loading-area" class="hidden py-6 text-center">
-                    <div class="loader"></div>
-                    <p class="text-sm text-slate-400 mt-3">🧠 Analyzing image & crafting prompt...</p>
-                </div>
-                <textarea id="prompt-result" rows="12" readonly 
-                          class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none prompt-box"></textarea>
-
-                <!-- INSTRUCTIONS + VECTOR FORMAT NOTE -->
-                <div id="instructions" class="hidden space-y-3 text-sm text-slate-300 border-t border-slate-700 pt-3">
-                    <div>
-                        <p class="font-semibold text-amber-400">🛠️ How to generate your vector image:</p>
-                        <ol class="list-decimal list-inside space-y-1 text-xs">
-                            <li>Upload the <strong>same reference image</strong> to your chosen AI image generator (e.g., ChatGPT, Gemini, Flow, etc.).</li>
-                            <li>Copy the entire prompt above and paste it into the image generator.</li>
-                            <li>Generate and enjoy your vector artwork! 😊</li>
-                        </ol>
+            <!-- TAB 1: IMAGE TO PROMPT -->
+            <div id="tab1" class="tab-content">
+                <div class="grid md:grid-cols-5 gap-5">
+                    <div class="md:col-span-2 space-y-4">
+                        <div class="card p-5 space-y-3">
+                            <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">1.</span> Upload Image</h3>
+                            <input type="file" id="img-input" accept="image/*" onchange="previewImg(event)" 
+                                   class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-amber-400 hover:file:bg-slate-600 cursor-pointer"/>
+                            <div id="preview-wrapper" class="hidden text-center pt-2">
+                                <img id="img-view" class="max-h-40 mx-auto rounded-xl border border-slate-700 object-contain shadow-md"/>
+                            </div>
+                        </div>
+                        <div class="card p-5 space-y-3">
+                            <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">2.</span> Choose Style</h3>
+                            <select id="style-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="">-- Select a style --</option>
+                                <option value="01">01 — Clean Flat Vector</option>
+                                <option value="02">02 — Minimal Vector</option>
+                                <option value="03">03 — Geometric Vector</option>
+                                <option value="04">04 — Premium Stock Vector</option>
+                                <option value="05">05 — Paper Cut Vector</option>
+                                <option value="06">06 — Isometric Vector</option>
+                                <option value="07">07 — Low Poly Vector</option>
+                                <option value="08">08 — Monoline Vector</option>
+                                <option value="09">09 — Bold Poster Vector</option>
+                                <option value="10">10 — Sticker Vector</option>
+                                <option value="11">11 — Cute Friendly Vector</option>
+                                <option value="12">12 — Mascot Vector</option>
+                                <option value="13">13 — Hand-Drawn Vector</option>
+                                <option value="14">14 — Editorial Vector</option>
+                                <option value="15">15 — Retro Commercial Vector</option>
+                                <option value="16">16 — Mid-Century Modern Vector</option>
+                                <option value="17">17 — Luxury Line Vector</option>
+                                <option value="18">18 — Organic Flat Vector</option>
+                                <option value="19">19 — Infographic Vector</option>
+                                <option value="20">20 — Technical Vector</option>
+                                <option value="21">21 — Duotone Vector</option>
+                                <option value="22">22 — Collage Vector</option>
+                                <option value="23">23 — Gradient Vector</option>
+                                <option value="24">24 — Pop Graphic Vector</option>
+                                <option value="25">25 — Engraved Vector</option>
+                                <option value="26">26 — Pixel Grid Vector</option>
+                            </select>
+                        </div>
+                        <button id="btn-run" onclick="generatePrompt()" disabled class="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2">
+                            <span>⚡ Generate Prompt</span>
+                        </button>
                     </div>
+                    <div class="md:col-span-3">
+                        <div id="output-box" class="card p-5 space-y-3 hidden fade-in">
+                            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                                <h3 class="text-sm font-bold">📋 Production Prompt</h3>
+                                <button onclick="copyPrompt()" id="btn-copy" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition">
+                                    <i class="fas fa-copy mr-1"></i> Copy
+                                </button>
+                            </div>
+                            <div id="loading-area" class="hidden py-6 text-center">
+                                <div class="loader"></div>
+                                <p class="text-sm text-slate-400 mt-3">🧠 Analyzing & crafting prompt...</p>
+                            </div>
+                            <textarea id="prompt-result" rows="12" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none prompt-box"></textarea>
+                            <div id="instructions" class="hidden space-y-3 text-sm text-slate-300 border-t border-slate-700 pt-3">
+                                <div>
+                                    <p class="font-semibold text-amber-400">🛠️ How to use:</p>
+                                    <ol class="list-decimal list-inside space-y-1 text-xs">
+                                        <li>Upload the <strong>same reference image</strong> to your AI image generator.</li>
+                                        <li>Copy the prompt above and paste it into the generator.</li>
+                                        <li>Generate and enjoy your vector artwork! 😊</li>
+                                    </ol>
+                                </div>
+                                <div class="info-note">
+                                    <p><strong>📌 Vector Format Note</strong><br>
+                                    The generated image is a <strong>raster</strong> file (JPEG/PNG).<br>
+                                    To convert to <strong>editable vector</strong> (SVG, EPS, AI), use:<br>
+                                    • Adobe Illustrator (Image Trace)<br>
+                                    • Vectorizer.ai<br>
+                                    • Inkscape (Trace Bitmap)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="placeholder-output" class="card p-5 text-center text-slate-500 text-sm">
+                            <p>Your prompt will appear here after you upload an image and select a style.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- ADDED: IMPORTANT NOTE ABOUT VECTOR FORMATS -->
+            <!-- TAB 2: PROMPT ENHANCER -->
+            <div id="tab2" class="tab-content hidden">
+                <div class="card p-6 space-y-4 max-w-2xl mx-auto">
+                    <h3 class="text-lg font-bold">✍️ Prompt Enhancer</h3>
+                    <p class="text-xs text-slate-400">Describe your subject in a few words, and we’ll generate a structured vector prompt (no image needed).</p>
+                    <input type="text" id="enhance-input" placeholder="e.g., a red vintage car, a cozy coffee shop, a futuristic robot" 
+                           class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500"/>
+                    <select id="enhance-style" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="01">01 — Clean Flat Vector</option>
+                        <option value="02">02 — Minimal Vector</option>
+                        <option value="03">03 — Geometric Vector</option>
+                        <option value="04">04 — Premium Stock Vector</option>
+                        <option value="05">05 — Paper Cut Vector</option>
+                        <option value="06">06 — Isometric Vector</option>
+                        <option value="07">07 — Low Poly Vector</option>
+                        <option value="08">08 — Monoline Vector</option>
+                        <option value="09">09 — Bold Poster Vector</option>
+                        <option value="10">10 — Sticker Vector</option>
+                        <option value="11">11 — Cute Friendly Vector</option>
+                        <option value="12">12 — Mascot Vector</option>
+                        <option value="13">13 — Hand-Drawn Vector</option>
+                        <option value="14">14 — Editorial Vector</option>
+                        <option value="15">15 — Retro Commercial Vector</option>
+                        <option value="16">16 — Mid-Century Modern Vector</option>
+                        <option value="17">17 — Luxury Line Vector</option>
+                        <option value="18">18 — Organic Flat Vector</option>
+                        <option value="19">19 — Infographic Vector</option>
+                        <option value="20">20 — Technical Vector</option>
+                        <option value="21">21 — Duotone Vector</option>
+                        <option value="22">22 — Collage Vector</option>
+                        <option value="23">23 — Gradient Vector</option>
+                        <option value="24">24 — Pop Graphic Vector</option>
+                        <option value="25">25 — Engraved Vector</option>
+                        <option value="26">26 — Pixel Grid Vector</option>
+                    </select>
+                    <button onclick="enhancePrompt()" class="w-full btn-primary py-3 rounded-xl text-base">✨ Enhance Prompt</button>
+                    <div id="enhance-output" class="hidden space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                            <span class="text-sm font-semibold">📋 Enhanced Prompt</span>
+                            <button onclick="copyText('enhance-result')" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1 rounded-lg border border-slate-600">Copy</button>
+                        </div>
+                        <textarea id="enhance-result" rows="10" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 prompt-box"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: STYLE REFERENCE -->
+            <div id="tab3" class="tab-content hidden">
+                <div class="card p-6 space-y-4">
+                    <h3 class="text-lg font-bold">📚 Style Reference</h3>
+                    <p class="text-xs text-slate-400">Each style has a distinct visual construction. Hover to see the key characteristics.</p>
+                    <div class="style-grid">
+                        <div class="style-tag"><strong>01 Clean Flat</strong> — smooth, solid, crisp</div>
+                        <div class="style-tag"><strong>02 Minimal</strong> — extreme reduction</div>
+                        <div class="style-tag"><strong>03 Geometric</strong> — primitives only</div>
+                        <div class="style-tag"><strong>04 Premium Stock</strong> — tonal planes</div>
+                        <div class="style-tag"><strong>05 Paper Cut</strong> — stacked layers</div>
+                        <div class="style-tag"><strong>06 Isometric</strong> — 3 axes, flat planes</div>
+                        <div class="style-tag"><strong>07 Low Poly</strong> — faceted polygons</div>
+                        <div class="style-tag"><strong>08 Monoline</strong> — uniform lines</div>
+                        <div class="style-tag"><strong>09 Bold Poster</strong> — large blocks</div>
+                        <div class="style-tag"><strong>10 Sticker</strong> — thick border</div>
+                        <div class="style-tag"><strong>11 Cute Friendly</strong> — rounded soft</div>
+                        <div class="style-tag"><strong>12 Mascot</strong> — bold expressive</div>
+                        <div class="style-tag"><strong>13 Hand-Drawn</strong> — organic lines</div>
+                        <div class="style-tag"><strong>14 Editorial</strong> — artistic crop</div>
+                        <div class="style-tag"><strong>15 Retro Commercial</strong> — vintage print</div>
+                        <div class="style-tag"><strong>16 Mid-Century</strong> — organic curves</div>
+                        <div class="style-tag"><strong>17 Luxury Line</strong> — thin elegant</div>
+                        <div class="style-tag"><strong>18 Organic Flat</strong> — nature shapes</div>
+                        <div class="style-tag"><strong>19 Infographic</strong> — modules</div>
+                        <div class="style-tag"><strong>20 Technical</strong> — precision</div>
+                        <div class="style-tag"><strong>21 Duotone</strong> — two colors</div>
+                        <div class="style-tag"><strong>22 Collage</strong> — overlapping cutouts</div>
+                        <div class="style-tag"><strong>23 Gradient</strong> — color transitions</div>
+                        <div class="style-tag"><strong>24 Pop Graphic</strong> — loud & energetic</div>
+                        <div class="style-tag"><strong>25 Engraved</strong> — hatched lines</div>
+                        <div class="style-tag"><strong>26 Pixel Grid</strong> — stepped blocks</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: QUICK TIPS -->
+            <div id="tab4" class="tab-content hidden">
+                <div class="card p-6 space-y-4 max-w-2xl mx-auto">
+                    <h3 class="text-lg font-bold">💡 Quick Tips for AI Generators</h3>
+                    <ul class="list-disc list-inside text-sm text-slate-300 space-y-2">
+                        <li><strong>Midjourney:</strong> Paste the prompt after <code>/imagine</code>. Add <code>--v 6</code> and <code>--style raw</code> for better vector aesthetics.</li>
+                        <li><strong>DALL‑E 3:</strong> Use the full prompt as is. The system will interpret the vector style instructions.</li>
+                        <li><strong>Stable Diffusion:</strong> Add negative prompts like <code>photorealistic, texture, noise, blur</code> to reinforce the vector look.</li>
+                        <li><strong>ChatGPT (with DALL‑E):</strong> Paste the prompt directly. It works well with the built-in image generator.</li>
+                        <li><strong>Flow / Leonardo AI:</strong> Enable "Alchemy" or "Vector" presets if available.</li>
+                        <li>Always upload the <strong>same reference image</strong> if your generator supports image-to-image.</li>
+                        <li>If the output looks too realistic, add <code>flat illustration, vector art, no shading</code> to the negative prompt.</li>
+                    </ul>
                     <div class="info-note">
-                        <p><strong>📌 Important – Vector Format Note</strong><br>
-                        The generated image from AI is a <strong>raster</strong> file (JPEG/PNG).<br>
-                        To convert it into an <strong>editable vector</strong> file (SVG, EPS, AI), you can use tracing tools such as:<br>
-                        • <strong>Adobe Illustrator</strong> (Image Trace)<br>
-                        • <strong>Vectorizer.ai</strong><br>
-                        • <strong>Inkscape</strong> (Trace Bitmap)<br>
-                        • Other online vectorization services.</p>
+                        <p><strong>Pro tip:</strong> Combine the generated prompt with a style reference image (if available) for even more consistent results.</p>
                     </div>
-
-                    <p class="text-xs text-slate-500 mt-1">💡 The prompt works with any subject – no manual editing needed.</p>
                 </div>
             </div>
 
@@ -225,100 +348,95 @@
     </div>
 
     <script>
-        // ==================== CONFIG ====================
+        // ==================== PASSWORD ====================
         const APP_PASSWORD = "VFACCESS2026";
         let hasImage = false;
         let selectedStyle = "";
 
-        // ==================== DOM REFS ====================
-        const authBox = document.getElementById('auth-box');
-        const toolBox = document.getElementById('tool-box');
-        const passInput = document.getElementById('pass-input');
-        const authErr = document.getElementById('auth-err');
-        const imgInput = document.getElementById('img-input');
-        const previewWrapper = document.getElementById('preview-wrapper');
-        const imgView = document.getElementById('img-view');
-        const styleSelect = document.getElementById('style-select');
-        const btnRun = document.getElementById('btn-run');
-        const outputBox = document.getElementById('output-box');
-        const loadingArea = document.getElementById('loading-area');
-        const promptResult = document.getElementById('prompt-result');
-        const instructions = document.getElementById('instructions');
-        const copyBtn = document.getElementById('btn-copy');
-
-        // ==================== PASSWORD TOGGLE ====================
         function togglePassword() {
-            const input = passInput;
+            const input = document.getElementById('pass-input');
             const icon = document.getElementById('pass-eye');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fas fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fas fa-eye';
-            }
+            if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } 
+            else { input.type = 'password'; icon.className = 'fas fa-eye'; }
         }
 
-        // ==================== LOGIN ====================
         function loginApp() {
-            const pass = passInput.value.trim();
+            const pass = document.getElementById('pass-input').value.trim();
+            const err = document.getElementById('auth-err');
             if (pass === APP_PASSWORD) {
-                authBox.classList.add('hidden');
-                toolBox.classList.remove('hidden');
-                authErr.classList.add('hidden');
+                document.getElementById('auth-box').classList.add('hidden');
+                document.getElementById('tool-box').classList.remove('hidden');
+                err.classList.add('hidden');
+                document.getElementById('badge-status').className = "text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                document.getElementById('badge-status').textContent = "Active";
                 updateGenerateButton();
             } else {
-                authErr.classList.remove('hidden');
+                err.classList.remove('hidden');
             }
         }
 
-        // ==================== IMAGE PREVIEW ====================
+        // ==================== TABS ====================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // ==================== IMAGE ====================
         function previewImg(e) {
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = (event) => {
-                imgView.src = event.target.result;
-                previewWrapper.classList.remove('hidden');
+                document.getElementById('img-view').src = event.target.result;
+                document.getElementById('preview-wrapper').classList.remove('hidden');
                 hasImage = true;
                 updateGenerateButton();
             };
             reader.readAsDataURL(file);
         }
 
-        // ==================== STYLE CHANGE ====================
-        styleSelect.addEventListener('change', function() {
+        document.getElementById('style-select').addEventListener('change', function() {
             selectedStyle = this.value;
             updateGenerateButton();
         });
 
-        // ==================== UPDATE GENERATE BUTTON ====================
         function updateGenerateButton() {
+            const btn = document.getElementById('btn-run');
             if (hasImage && selectedStyle !== "") {
-                btnRun.disabled = false;
-                btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
+                btn.disabled = false;
+                btn.innerHTML = '<span>⚡ Generate Prompt</span>';
             } else {
-                btnRun.disabled = true;
-                btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
+                btn.disabled = true;
+                btn.innerHTML = '<span>⚡ Generate Prompt</span>';
             }
         }
 
-        // ==================== GENERATE (simulated) ====================
+        // ==================== GENERATE ====================
         function generatePrompt() {
             if (!hasImage || selectedStyle === "") return;
+            const outputBox = document.getElementById('output-box');
+            const placeholder = document.getElementById('placeholder-output');
+            const loading = document.getElementById('loading-area');
+            const result = document.getElementById('prompt-result');
+            const instructions = document.getElementById('instructions');
+            const copyBtn = document.getElementById('btn-copy');
+            const btnRun = document.getElementById('btn-run');
 
             outputBox.classList.remove('hidden');
-            loadingArea.classList.remove('hidden');
-            promptResult.value = '';
+            placeholder.classList.add('hidden');
+            loading.classList.remove('hidden');
+            result.value = '';
             instructions.classList.add('hidden');
             copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
             btnRun.disabled = true;
             btnRun.innerHTML = '⏳ Processing...';
 
             setTimeout(() => {
-                loadingArea.classList.add('hidden');
+                loading.classList.add('hidden');
                 const prompt = getPromptTemplate(selectedStyle);
-                promptResult.value = prompt;
+                result.value = prompt;
                 instructions.classList.remove('hidden');
                 btnRun.disabled = false;
                 btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
@@ -326,79 +444,69 @@
             }, 5000);
         }
 
-        // ==================== COPY ====================
-        function copyPrompt() {
-            const text = promptResult.value;
-            if (!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => { copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy'; }, 2000);
-            }).catch(() => {
-                promptResult.select();
-                document.execCommand('copy');
-                copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => { copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy'; }, 2000);
-            });
+        // ==================== ENHANCE ====================
+        function enhancePrompt() {
+            const input = document.getElementById('enhance-input').value.trim();
+            const style = document.getElementById('enhance-style').value;
+            const output = document.getElementById('enhance-output');
+            const result = document.getElementById('enhance-result');
+
+            if (!input) { alert('Please describe your subject first.'); return; }
+            output.classList.remove('hidden');
+            result.value = '✨ Generating enhanced prompt...';
+
+            setTimeout(() => {
+                let base = getPromptTemplate(style);
+                base = base.replace(/the main object or character visible in the image/g, input);
+                base = base.replace(/The primary subject from the uploaded reference/g, input);
+                result.value = base;
+            }, 1500);
         }
 
-        // ==================== 26 PROMPT TEMPLATES (No placeholders, universal) ====================
+        // ==================== COPY ====================
+        function copyPrompt() { copyText('prompt-result'); }
+        function copyText(id) {
+            const el = document.getElementById(id);
+            const text = el.value;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector(`#${id}`)?.closest?.('.space-y-3')?.querySelector?.('button');
+                if (btn) { btn.innerHTML = '✅ Copied!'; setTimeout(() => btn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy', 2000); }
+            }).catch(() => { el.select(); document.execCommand('copy'); });
+        }
+
+        // ==================== 26 PROMPT TEMPLATES (LENGKAP) ====================
         function getPromptTemplate(styleId) {
             const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is the main object or character visible in the image. Extract the primary subject and any distinct supporting elements that define its context.\n\nSUBJECT + SUPPORTING ELEMENTS:\nThe primary subject from the uploaded reference, along with its key supporting details (e.g., accessories, background elements that interact with it).\n\nPRESERVATION:\nPreserve the recognizable silhouette, overall proportions, relative scale, orientation, and dominant color relationships of the original reference.\n\nSELECTED STYLE CONSTRUCTION:\n`;
 
             const styleMap = {
                 '01': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (extreme reduction) and Premium Stock (tonal planes), this style emphasizes smooth, clean shapes with solid fills and crisp boundaries.\n\n${base}Apply Clean Flat Vector construction: smooth natural silhouettes; solid fills with 2–4 controlled tones per major object; crisp boundaries; no gradients or textures; medium‑low detail.\n\nSHAPE / SILHOUETTE:\nOrganic, smooth silhouettes without sharp corners. Use simple, recognizable contours.\n\nCOLOR SYSTEM:\nDerive dominant colors from the reference. Use 2–4 solid tones per object, maintaining clear separation between color areas.\n\nMATERIAL / DETAIL:\nKeep only essential details; remove photographic noise. Use solid color blocks to suggest material cues.\n\nISOLATED STOCK FORMAT:\nPure white #FFFFFF background, 1:1 square, centered composition, generous whitespace, full visibility.\n\nTRACE-FRIENDLY OUTPUT:\nClean silhouettes, crisp boundaries, separated color regions.\n\n🚫 NEGATIVE / EXCLUSION:\nNo gradients, no deep modeling, no decorative outlines, no texture, no photographic elements, no text, no watermark.`,
-
                 '02': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (more detail) and Geometric (primitive shapes), this style aggressively reduces the subject to only recognition‑critical shapes.\n\n${base}Apply Minimal Vector construction: extreme simplification; very few internal forms; large uninterrupted color areas; restrained palette (2–3 neutrals + 1 accent).\n\nSHAPE / SILHOUETTE:\nMaximum reduction – only the essential outer silhouette and one or two large internal fields.\n\nCOLOR SYSTEM:\nVery restrained: 2–3 neutral tones (e.g., gray, white, black) plus one accent color from the reference.\n\nMATERIAL / DETAIL:\nNo detail; only large color areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF background, 1:1, centered, spacious.\n\nTRACE-FRIENDLY OUTPUT:\nVery simple shapes, easy to trace.\n\n🚫 NEGATIVE / EXCLUSION:\nNo medium/high detail, no multiple highlights, no decorative elements, no textures.`,
-
                 '03': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (organic) and Minimal (reduced), this style rebuilds the subject using circles, arcs, polygons, and angular segments.\n\n${base}Apply Geometric Vector construction: rebuild organic structures with geometric primitives; aligned edges; measured proportions; repeated geometric logic.\n\nSHAPE / SILHOUETTE:\nEverything is constructed from circles, squares, triangles, trapezoids, and straight lines. No organic curves.\n\nCOLOR SYSTEM:\n3–5 solid colors with high contrast; colors derived from reference but simplified.\n\nMATERIAL / DETAIL:\nMedium detail – mechanical, precise, with visible geometric facets.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, straight edges and regular curves.\n\n🚫 NEGATIVE / EXCLUSION:\nNo random organic contours, no painterly curves, no gradients.`,
-
                 '04': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (solid) and Premium Stock (tonal), this style adds sophisticated layered modeling with highlight/shadow planes.\n\n${base}Apply Premium Stock Vector construction: 3 value planes (light, mid, dark) per object; no outlines; polished material cues; balanced dimensional depth.\n\nSHAPE / SILHOUETTE:\nSmooth, commercially realistic silhouettes with subtle contour variations.\n\nCOLOR SYSTEM:\nRich palette from reference, with 3–5 tones per object to create volume.\n\nMATERIAL / DETAIL:\nMedium‑high detail: reflections, folds, subtle textures – all rendered as solid planes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered, whitespace.\n\nTRACE-FRIENDLY OUTPUT:\nClean separated value planes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo flat icon treatment, no CGI gloss, no photographic texture.`,
-
                 '05': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (single layer) and Premium Stock (tonal), this style creates depth through stacked paper‑like cut layers.\n\n${base}Apply Paper Cut Vector construction: 3–5 stacked offset layers; visible layer overlaps; crisp cut boundaries; shallow dimensional separation; coordinated paper‑color palette.\n\nSHAPE / SILHOUETTE:\nSimple organic shapes with sharp cut edges; each layer is a separate piece.\n\nCOLOR SYSTEM:\nCoordinated paper‑like colors (e.g., pastel or muted solids from reference), with each layer slightly different.\n\nMATERIAL / DETAIL:\nShow layer overlaps and drop shadows (simulated by offset).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSeparate layers with clear boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo realistic paper fibers, no soft 3D rendering, no gradients.`,
-
                 '06': `VISUAL DIFFERENTIATOR:\nCompared to Geometric (flat primitives) and Technical (engineered), this style uses a consistent isometric spatial system.\n\n${base}Apply Isometric Vector construction: consistent 30°/150°/90° axes; top/front/side planes; parallel edges; controlled 3D‑like depth.\n\nSHAPE / SILHOUETTE:\nAll planes flat and aligned to isometric axes. No perspective distortion.\n\nCOLOR SYSTEM:\n3–5 solid colors; each plane (top, front, side) has a different value (e.g., top lightest, side darkest).\n\nMATERIAL / DETAIL:\nMedium detail with repeating isometric elements.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, straight lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo ordinary perspective, no mixed viewpoints, no curved lines.`,
-
                 '07': `VISUAL DIFFERENTIATOR:\nCompared to Geometric (primitives) and Premium Stock (smooth), this style uses deliberate polygonal facets.\n\n${base}Apply Low Poly Vector construction: flat polygonal facets covering major surfaces; angular silhouette; faceted tonal blocks; limited multi‑tone palette.\n\nSHAPE / SILHOUETTE:\nAll curves replaced by triangles or simple polygons. Facet edges are visible.\n\nCOLOR SYSTEM:\n4–8 colors from reference, with value shifts between facets.\n\nMATERIAL / DETAIL:\nMedium detail – facets are large enough to be readable.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear polygonal faces.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth rounded modeling, no excessive tiny triangles, no gradients.`,
-
                 '08': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (flat fields) and Luxury Line (thin lines), this style is line‑first with consistent contour weight.\n\n${base}Apply Monoline Vector construction: line‑first; consistent contour weight; limited fills; internal information expressed mainly through lines; open negative space.\n\nSHAPE / SILHOUETTE:\nContours and internal lines are drawn with a single uniform line weight. Minimal fills.\n\nCOLOR SYSTEM:\nBlack/white or one line color plus one light fill.\n\nMATERIAL / DETAIL:\nLow detail – information conveyed through lines, not shading.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear, continuous lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo heavy filled modeling, no complex shading, no multiple line weights.`,
-
                 '09': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (detailed) and Minimal (subtle), this style uses oversized graphic silhouettes and high contrast.\n\n${base}Apply Bold Poster Vector construction: oversized graphic shapes; large color fields; high contrast; simplified internal detail; strong visual hierarchy.\n\nSHAPE / SILHOUETTE:\nBold, iconic, readable at thumbnail size. Very few internal shapes.\n\nCOLOR SYSTEM:\n2–4 high‑contrast colors (e.g., black, white, red, yellow) derived from reference but pushed to extremes.\n\nMATERIAL / DETAIL:\nExtremely low – only main silhouette and large decorative accents.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nLarge color blocks.\n\n🚫 NEGATIVE / EXCLUSION:\nNo delicate detail, no subtle tonal modeling, no gradients.`,
-
                 '10': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (open) and Bold Poster (large blocks), this style adds a thick continuous outer border.\n\n${base}Apply Sticker Vector construction: compact die‑cut silhouette; strong continuous outer contour (2–3px border); simplified interior; vivid controlled palette.\n\nSHAPE / SILHOUETTE:\nCompact, with a thick outline surrounding the entire shape. Interior is simplified.\n\nCOLOR SYSTEM:\nBright, vivid colors (max 4).\n\nMATERIAL / DETAIL:\nLow‑medium – key details kept, but everything is inside the border.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear border, simple interior.\n\n🚫 NEGATIVE / EXCLUSION:\nNo sparse editorial spacing, no deep dimensional rendering.`,
-
                 '11': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (sharp) and Minimal (austere), this style uses rounded, soft, playful forms.\n\n${base}Apply Cute Friendly Vector construction: rounded softened forms; slightly playful proportions; gentle curves; cheerful controlled palette; softened corners.\n\nSHAPE / SILHOUETTE:\nAll corners rounded; curves are gentle; proportions may be slightly exaggerated (e.g., bigger head if character).\n\nCOLOR SYSTEM:\nWarm, cheerful, pastel or bright palette from reference, with low contrast.\n\nMATERIAL / DETAIL:\nLow detail – focus on main shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, rounded shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo harsh angular construction, no aggressive contrast.`,
-
                 '12': `VISUAL DIFFERENTIATOR:\nCompared to Cute Friendly (soft) and Bold Poster (flat), this style gives a characterful, energetic silhouette.\n\n${base}Apply Mascot Vector construction: bold readable silhouette; slightly exaggerated rounded proportions; strong contour hierarchy; simplified but expressive feature grouping; bold color blocking.\n\nSHAPE / SILHOUETTE:\nDynamic, bold, with emphasis on silhouette readability. Proportions may be slightly exaggerated for personality.\n\nCOLOR SYSTEM:\nSaturated colors, high contrast, 3–5 colors.\n\nMATERIAL / DETAIL:\nMedium – expressive features and accents are emphasized.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear bold shapes with thick outlines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo generic flat product redraw, no tiny detail, no anthropomorphic additions unless present in reference.`,
-
                 '13': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (perfect lines) and Organic Flat (smooth), this style shows deliberate organic contour variation.\n\n${base}Apply Hand‑Drawn Vector construction: clean vector shapes with intentionally organic contour variation; subtle asymmetry; controlled imperfect edges; restrained flat fills.\n\nSHAPE / SILHOUETTE:\nImperfect, slightly wobbly lines; corners are not perfectly sharp; organic feel.\n\nCOLOR SYSTEM:\nSolid, limited palette (like colored pencil or ink).\n\nMATERIAL / DETAIL:\nMedium – details are drawn with lines, not filled areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nIrregular but clean lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo random wobble, no sketch noise, no watercolor texture, no perfect symmetry.`,
-
                 '14': `VISUAL DIFFERENTIATOR:\nCompared to Editorial (abstract) and Minimal (simple), this style uses art‑directed abstraction and selective emphasis.\n\n${base}Apply Editorial Vector construction: art‑directed abstraction; selective cropping‑like emphasis; elegant silhouette simplification; unusual but intentional shape relationships; restrained sophisticated palette.\n\nSHAPE / SILHOUETTE:\nSimplified, often with implied cropping; shapes may extend beyond frame; negative space is used intentionally.\n\nCOLOR SYSTEM:\nSophisticated palette (e.g., monochrome + one accent) from reference.\n\nMATERIAL / DETAIL:\nLow‑medium – only essential details.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, thoughtful shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo childish treatment, no uniform icon geometry, no photorealistic depth.`,
-
                 '15': `VISUAL DIFFERENTIATOR:\nCompared to Mid‑Century (organic) and Bold Poster (modern), this style evokes vintage advertising.\n\n${base}Apply Retro Commercial Vector construction: vintage advertising construction; bold contour shapes; limited warm palette; simplified color blocking; print‑era separations; slightly nostalgic graphic proportions.\n\nSHAPE / SILHOUETTE:\nBold, with thick outlines and simple, blocky shapes. Use halftone dots or parallel lines as decoration.\n\nCOLOR SYSTEM:\nWarm vintage palette: cream, red, navy, mint green, mustard – solid colors.\n\nMATERIAL / DETAIL:\nMedium – includes decorative elements like stars, stripes, geometric frames.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear, bold shapes with retro accents.\n\n🚫 NEGATIVE / EXCLUSION:\nNo modern glossy gradients, no photorealism, no contemporary fonts.`,
-
                 '16': `VISUAL DIFFERENTIATOR:\nCompared to Retro Commercial (bold) and Organic Flat (flowing), this style uses 1950s–60s organic geometry with muted colors.\n\n${base}Apply Mid‑Century Modern Vector construction: 1950s–60s organic geometry; simplified asymmetrical forms; confident curved primitives; muted coordinated palette; balanced asymmetry.\n\nSHAPE / SILHOUETTE:\nOrganic curves, often asymmetrical; use half‑circles, arcs, and flowing lines. No sharp corners.\n\nCOLOR SYSTEM:\nMuted palette: teal, mustard, coral, cream, olive – solid colors.\n\nMATERIAL / DETAIL:\nLow – large, elegant shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo generic modern flat art, no excessive detail, no harsh contrasts.`,
-
                 '17': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (uniform line) and Luxury Line (thin), this style is sparse, elegant, with thin‑to‑medium line hierarchy.\n\n${base}Apply Luxury Line Vector construction: elegant sparse contour drawing; thin‑to‑medium controlled line hierarchy; selective minimal fills; refined negative space; premium restraint.\n\nSHAPE / SILHOUETTE:\nForms are drawn with flowing, thin lines (0.5‑1pt). Fills are minimal or transparent.\n\nCOLOR SYSTEM:\nMonochrome (gold, silver, black, white) or refined solid colors.\n\nMATERIAL / DETAIL:\nLow – details conveyed through fine lines.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nElegant, precise linework.\n\n🚫 NEGATIVE / EXCLUSION:\nNo heavy outlines, no dense color blocking, no photorealistic shading.`,
-
                 '18': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (structured) and Mid‑Century (geometric), this style uses flowing, nature‑mimicking shapes.\n\n${base}Apply Organic Flat Vector construction: flowing natural silhouettes; soft irregular curves; gentle asymmetry; layered organic flat shapes; calm natural palette.\n\nSHAPE / SILHOUETTE:\nNo straight lines – all shapes are curved and asymmetrical, like leaves, waves, or clouds.\n\nCOLOR SYSTEM:\nNatural palette: greens, browns, blues, creams – solid colors.\n\nMATERIAL / DETAIL:\nMedium – details like veins or organic patterns shown as shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo rigid primitives, no hard technical edges, no geometric precision.`,
-
                 '19': `VISUAL DIFFERENTIATOR:\nCompared to Technical (engineering) and Infographic (modular), this style uses a modular visual grammar with separated information zones.\n\n${base}Apply Infographic Vector construction: modular visual grammar; clearly separated information zones; labeled‑shape logic (without text); consistent alignment; repeated modules; hierarchy through size and grouping.\n\nSHAPE / SILHOUETTE:\nObject is broken into distinct modules or components, each with its own frame or background.\n\nCOLOR SYSTEM:\nLimited palette with distinct colors for each module.\n\nMATERIAL / DETAIL:\nHigh – each component is visually labeled (using shapes, not text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, organized modules.\n\n🚫 NEGATIVE / EXCLUSION:\nNo decorative chaos, no painterly depth, no text.`,
-
                 '20': `VISUAL DIFFERENTIATOR:\nCompared to Isometric (spatial) and Infographic (modular), this style emphasizes engineered precision and component separation.\n\n${base}Apply Technical Vector construction: engineered construction; measured proportions; component separation; precise contours; sectional/diagram‑like clarity; disciplined alignment; restrained technical palette.\n\nSHAPE / SILHOUETTE:\nPrecise, measurable shapes; often includes cutaways, exploded views, or dimension lines.\n\nCOLOR SYSTEM:\nTechnical palette: grays, blue, white, black.\n\nMATERIAL / DETAIL:\nHigh – details like bolts, joints, gaps, and labels (without text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, precise lines and clear components.\n\n🚫 NEGATIVE / EXCLUSION:\nNo playful proportions, no soft organic treatment, no decorative elements.`,
-
                 '21': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (neutrals) and Clean Flat (full palette), this style strictly reduces to two dominant color families.\n\n${base}Apply Duotone Vector construction: reduce to two dominant color families plus optional neutral support; strong tonal grouping; simplified shapes; graphic contrast.\n\nSHAPE / SILHOUETTE:\nClear silhouettes with strong contrast between the two colors.\n\nCOLOR SYSTEM:\nExactly two dominant colors (e.g., blue + orange, black + red, etc.) plus white for background. No other colors.\n\nMATERIAL / DETAIL:\nMedium – details conveyed through contrast and value variations within each color.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nTwo‑color separation.\n\n🚫 NEGATIVE / EXCLUSION:\nNo full original palette, no many tonal families, no gradients.`,
-
                 '22': `VISUAL DIFFERENTIATOR:\nCompared to Paper Cut (stacked layers) and Collage (overlapping pieces), this style uses assembled cutout pieces with intentional overlaps.\n\n${base}Apply Collage Vector construction: assembled cutout pieces; intentional overlaps; varied scale; visible layer boundaries; mixed shape fragments; graphic depth created by stacking and intersection.\n\nSHAPE / SILHOUETTE:\nObject is broken into many irregular, overlapping pieces of different sizes and scales.\n\nCOLOR SYSTEM:\nDiverse palette from reference, each piece a solid color.\n\nMATERIAL / DETAIL:\nHigh – many small pieces creating a mosaic effect.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSeparate pieces with clear boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo one‑piece flat redraw, no seamless unit.`,
-
                 '23': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (no gradients) and Premium Stock (tonal planes), this style uses purposeful smooth gradients inside shapes.\n\n${base}Apply Gradient Vector construction: crisp silhouettes with purposeful smooth gradients inside controlled shapes; modern dimensional color transitions; restrained highlight zones; clean boundaries.\n\nSHAPE / SILHOUETTE:\nSmooth, clean silhouettes with linear or radial gradients filling the shapes.\n\nCOLOR SYSTEM:\nColors from reference, blended across forms using gradients (e.g., light to dark).\n\nMATERIAL / DETAIL:\nMedium – gradients replace solid fields.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nGradients are smooth but contained within crisp boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo uncontrolled airbrushing, no photographic lighting, no excessive effects.`,
-
                 '24': `VISUAL DIFFERENTIATOR:\nCompared to Bold Poster (large blocks) and Pop Graphic (energetic), this style uses punchy colors, playful scale shifts, and high visual energy.\n\n${base}Apply Pop Graphic Vector construction: energetic contemporary shapes; punchy color contrasts; playful scale shifts; bold rhythm; graphic accents integrated into the subject.\n\nSHAPE / SILHOUETTE:\nBold, dynamic, with scale exaggerations and graphic elements like halftone dots, bursts, or diagonal stripes.\n\nCOLOR SYSTEM:\nBright, complementary contrasts (e.g., magenta + green, yellow + purple) – loud and unnatural.\n\nMATERIAL / DETAIL:\nMedium – includes decorative graphic accents.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nBold shapes with strong graphic accents.\n\n🚫 NEGATIVE / EXCLUSION:\nNo muted editorial restraint, no photorealistic depth, no subtle colors.`,
-
                 '25': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (continuous lines) and Engraved (hatched), this style uses etched contours with parallel hatch lines and crosshatching.\n\n${base}Apply Engraved Vector construction: etched contour construction; parallel hatch lines; crosshatching‑like tonal areas; line‑density modeling; traditional print illustration character; monochrome or restrained ink palette.\n\nSHAPE / SILHOUETTE:\nAll forms are built from parallel or cross‑hatched lines. No solid fills – only line density creates tone.\n\nCOLOR SYSTEM:\nBlack/white or single ink color.\n\nMATERIAL / DETAIL:\nHigh – many lines creating texture and depth.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nOrganized linework.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth digital gradients, no filled glossy shading, no solid areas.`,
-
                 '26': `VISUAL DIFFERENTIATOR:\nCompared to Low Poly (facets) and Geometric (primitives), this style uses hard‑edged grid logic with stepped silhouettes.\n\n${base}Apply Pixel Grid Vector construction: hard‑edged grid logic; stepped silhouettes; block‑based internal shapes; limited palette; pixel‑scale rhythm; no smooth gradients; consistent grid units.\n\nSHAPE / SILHOUETTE:\nEvery curve is replaced by stepped blocks (pixels). Silhouette is jagged and blocky.\n\nCOLOR SYSTEM:\nLimited palette (similar to duotone or 4 colors).\n\nMATERIAL / DETAIL:\nLow‑medium – depends on grid size; all shapes are square blocks.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nGrid‑based block shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth vector curves, no gradients, no organic shapes.`
             };
-
             return styleMap[styleId] || styleMap['01'];
         }
     </script>

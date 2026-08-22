@@ -204,8 +204,8 @@
                                 <option value="16">16 — Mid-Century Modern Vector</option>
                                 <option value="17">17 — Luxury Line Vector</option>
                                 <option value="18">18 — Organic Flat Vector</option>
-                                <option value="19">19 — Infographic Vector</option>
-                                <option value="20">20 — Technical Vector</option>
+                                <option value="19">19 — Modular Segmentation (Infographic)</option>
+                                <option value="20">20 — Precision Engineering (Technical)</option>
                                 <option value="21">21 — Duotone Vector</option>
                                 <option value="22">22 — Collage Vector</option>
                                 <option value="23">23 — Gradient Vector</option>
@@ -261,7 +261,7 @@
             <div id="tab2" class="tab-content hidden">
                 <div class="card p-6 space-y-4 max-w-2xl mx-auto">
                     <h3 class="text-lg font-bold">✍️ Prompt Enhancer</h3>
-                    <p class="text-xs text-slate-400">Describe your subject in a few words, and we’ll generate a structured vector prompt (no image needed).</p>
+                    <p class="text-xs text-slate-400">Describe your subject in a few words, and we'll generate a structured vector prompt (no image needed).</p>
                     <input type="text" id="enhance-input" placeholder="e.g., a red vintage car, a cozy coffee shop, a futuristic robot" 
                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500"/>
                     <select id="enhance-style" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
@@ -283,8 +283,8 @@
                         <option value="16">16 — Mid-Century Modern Vector</option>
                         <option value="17">17 — Luxury Line Vector</option>
                         <option value="18">18 — Organic Flat Vector</option>
-                        <option value="19">19 — Infographic Vector</option>
-                        <option value="20">20 — Technical Vector</option>
+                        <option value="19">19 — Modular Segmentation (Infographic)</option>
+                        <option value="20">20 — Precision Engineering (Technical)</option>
                         <option value="21">21 — Duotone Vector</option>
                         <option value="22">22 — Collage Vector</option>
                         <option value="23">23 — Gradient Vector</option>
@@ -329,8 +329,8 @@
                         <div class="style-desc"><strong>16 Mid-Century Modern</strong> — <span>1950s–60s organic geometry. Asymmetrical, muted colors (teal, mustard, coral).</span></div>
                         <div class="style-desc"><strong>17 Luxury Line</strong> — <span>Thin, elegant contour lines (0.5–1pt). Minimal fills. Gold/black/white palette.</span></div>
                         <div class="style-desc"><strong>18 Organic Flat</strong> — <span>Flowing, nature-mimicking shapes (leaves, waves). No straight lines. Calm, natural colors.</span></div>
-                        <div class="style-desc"><strong>19 Infographic</strong> — <span>Modular breakdown. Separated components with clear visual labels. Diagram style.</span></div>
-                        <div class="style-desc"><strong>20 Technical</strong> — <span>Engineered precision. Cutaways, exploded views, dimension lines. Grays and blues.</span></div>
+                        <div class="style-desc"><strong>19 Modular Segmentation</strong> — <span>Object divided into framed color modules. No text. Looks like a visual breakdown.</span></div>
+                        <div class="style-desc"><strong>20 Precision Engineering</strong> — <span>Blueprint style. Exploded/separated parts. Ultra-precise lines. No text or dimensions.</span></div>
                         <div class="style-desc"><strong>21 Duotone</strong> — <span>Strictly two dominant colors + white. Strong contrast. Graphic and modern.</span></div>
                         <div class="style-desc"><strong>22 Collage</strong> — <span>Overlapping irregular cut pieces. Mosaic effect. Varied scale and solid colors.</span></div>
                         <div class="style-desc"><strong>23 Gradient</strong> — <span>Smooth color transitions inside shapes. Modern, glossy. No airbrush overdone.</span></div>
@@ -341,7 +341,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: LOGO GENERATOR (updated) -->
+            <!-- TAB 4: LOGO GENERATOR (UPDATED) -->
             <div id="tab4" class="tab-content hidden">
                 <div class="card p-6 space-y-4 max-w-2xl mx-auto">
                     <h3 class="text-lg font-bold">🏷️ Logo Prompt Generator</h3>
@@ -583,7 +583,6 @@
                         setTimeout(() => { btnElement.innerHTML = orig; }, 2000);
                     }
                 }).catch(() => {
-                    // fallback
                     el.select();
                     document.execCommand('copy');
                     showToast('✅ Copied!');
@@ -595,7 +594,7 @@
             }
         }
 
-        // ==================== 26 PROMPT TEMPLATES ====================
+        // ==================== 26 PROMPT TEMPLATES (FULLY UPDATED) ====================
         function getPromptTemplate(styleId) {
             const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is the main object or character visible in the image. Extract the primary subject and any distinct supporting elements that define its context.\n\nSUBJECT + SUPPORTING ELEMENTS:\nThe primary subject from the uploaded reference, along with its key supporting details (e.g., accessories, background elements that interact with it).\n\nPRESERVATION:\nPreserve the recognizable silhouette, overall proportions, relative scale, orientation, and dominant color relationships of the original reference.\n\nSELECTED STYLE CONSTRUCTION:\n`;
 
@@ -618,8 +617,11 @@
                 '16': `VISUAL DIFFERENTIATOR:\nCompared to Retro Commercial (bold) and Organic Flat (flowing), this style uses 1950s–60s organic geometry with muted colors.\n\n${base}Apply Mid‑Century Modern Vector construction: 1950s–60s organic geometry; simplified asymmetrical forms; confident curved primitives; muted coordinated palette; balanced asymmetry.\n\nSHAPE / SILHOUETTE:\nOrganic curves, often asymmetrical; use half‑circles, arcs, and flowing lines. No sharp corners.\n\nCOLOR SYSTEM:\nMuted palette: teal, mustard, coral, cream, olive – solid colors.\n\nMATERIAL / DETAIL:\nLow – large, elegant shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo generic modern flat art, no excessive detail, no harsh contrasts.`,
                 '17': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (uniform line) and Luxury Line (thin), this style is sparse, elegant, with thin‑to‑medium line hierarchy.\n\n${base}Apply Luxury Line Vector construction: elegant sparse contour drawing; thin‑to‑medium controlled line hierarchy; selective minimal fills; refined negative space; premium restraint.\n\nSHAPE / SILHOUETTE:\nForms are drawn with flowing, thin lines (0.5‑1pt). Fills are minimal or transparent.\n\nCOLOR SYSTEM:\nMonochrome (gold, silver, black, white) or refined solid colors.\n\nMATERIAL / DETAIL:\nLow – details conveyed through fine lines.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nElegant, precise linework.\n\n🚫 NEGATIVE / EXCLUSION:\nNo heavy outlines, no dense color blocking, no photorealistic shading.`,
                 '18': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (structured) and Mid‑Century (geometric), this style uses flowing, nature‑mimicking shapes.\n\n${base}Apply Organic Flat Vector construction: flowing natural silhouettes; soft irregular curves; gentle asymmetry; layered organic flat shapes; calm natural palette.\n\nSHAPE / SILHOUETTE:\nNo straight lines – all shapes are curved and asymmetrical, like leaves, waves, or clouds.\n\nCOLOR SYSTEM:\nNatural palette: greens, browns, blues, creams – solid colors.\n\nMATERIAL / DETAIL:\nMedium – details like veins or organic patterns shown as shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo rigid primitives, no hard technical edges, no geometric precision.`,
-                '19': `VISUAL DIFFERENTIATOR:\nCompared to Technical (engineering) and Infographic (modular), this style uses a modular visual grammar with separated information zones.\n\n${base}Apply Infographic Vector construction: modular visual grammar; clearly separated information zones; labeled‑shape logic (without text); consistent alignment; repeated modules; hierarchy through size and grouping.\n\nSHAPE / SILHOUETTE:\nObject is broken into distinct modules or components, each with its own frame or background.\n\nCOLOR SYSTEM:\nLimited palette with distinct colors for each module.\n\nMATERIAL / DETAIL:\nHigh – each component is visually labeled (using shapes, not text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, organized modules.\n\n🚫 NEGATIVE / EXCLUSION:\nNo decorative chaos, no painterly depth, no text.`,
-                '20': `VISUAL DIFFERENTIATOR:\nCompared to Isometric (spatial) and Infographic (modular), this style emphasizes engineered precision and component separation.\n\n${base}Apply Technical Vector construction: engineered construction; measured proportions; component separation; precise contours; sectional/diagram‑like clarity; disciplined alignment; restrained technical palette.\n\nSHAPE / SILHOUETTE:\nPrecise, measurable shapes; often includes cutaways, exploded views, or dimension lines.\n\nCOLOR SYSTEM:\nTechnical palette: grays, blue, white, black.\n\nMATERIAL / DETAIL:\nHigh – details like bolts, joints, gaps, and labels (without text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, precise lines and clear components.\n\n🚫 NEGATIVE / EXCLUSION:\nNo playful proportions, no soft organic treatment, no decorative elements.`,
+                // ==================== STYLE 19 (UPDATED - NO TEXT) ====================
+                '19': `VISUAL DIFFERENTIATOR:\nCompared to Technical (engineering lines) and Collage (organic cuts), this style uses strict geometric segmentation with solid color framing.\n\n${base}Apply Modular Segmentation Vector construction: the subject is divided into distinct geometric modules using color-coded bounding boxes or frames. Each module represents a functional part of the subject. NO TEXT, NO LABELS, NO LETTERS, NO NUMBERS. Use clean geometric separators (lines, boxes, or colored panels) to visually partition the object. Consistent alignment and repeated modular shapes. The composition feels like a visual breakdown, but purely illustrative without annotations.\n\nSHAPE / SILHOUETTE:\nObject is broken into 3–5 rectangular or circular framed zones, each containing a simplified part of the subject.\n\nCOLOR SYSTEM:\nLimited palette (4–5 solid colors), with each module having a distinct background color (e.g., blue module, red module).\n\nMATERIAL / DETAIL:\nHigh – each module shows the internal details of that specific part (e.g., if a shoe, one module shows the sole, another shows the laces).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean framed segments.\n\n🚫 NEGATIVE / EXCLUSION:\nNo text, no labels, no numbers, no letters, no diagram arrows, no speech bubbles, no decorative chaos, no painterly depth, no gradients.`,
+                // ==================== STYLE 20 (UPDATED - NO TEXT) ====================
+                '20': `VISUAL DIFFERENTIATOR:\nCompared to Isometric (spatial) and Modular Segmentation (frames), this style emphasizes precision cutaway and exploded geometry without any annotations.\n\n${base}Apply Precision Engineering Vector construction: the subject is drawn with ultra-precise geometric contours. Components are visually separated (exploded or layered) to show internal structure. Uses strict mechanical line hierarchies (thick outer contours, thin internal detail lines). NO TEXT, NO LABELS, NO DIMENSION LINES, NO ARROWS. Restrained technical palette (grays, blue, white, black). The aesthetic is purely visual engineering – like a beautifully rendered patent illustration without the text.\n\nSHAPE / SILHOUETTE:\nPrecise, sharp, measurable-looking shapes. Often includes cutaway sections or exploded parts floating slightly apart.\n\nCOLOR SYSTEM:\nTechnical palette: grays, slate blue, white, black – solid colors only.\n\nMATERIAL / DETAIL:\nVery high – details like internal grooves, joints, seams, and mechanical separations are clearly visible.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, precise lines and clear component separations.\n\n🚫 NEGATIVE / EXCLUSION:\nNo text, no labels, no numbers, no dimension lines, no arrows, no playful proportions, no soft organic treatment, no decorative elements, no gradients.`,
+                // ==================== STYLE 21 to 26 ====================
                 '21': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (neutrals) and Clean Flat (full palette), this style strictly reduces to two dominant color families.\n\n${base}Apply Duotone Vector construction: reduce to two dominant color families plus optional neutral support; strong tonal grouping; simplified shapes; graphic contrast.\n\nSHAPE / SILHOUETTE:\nClear silhouettes with strong contrast between the two colors.\n\nCOLOR SYSTEM:\nExactly two dominant colors (e.g., blue + orange, black + red, etc.) plus white for background. No other colors.\n\nMATERIAL / DETAIL:\nMedium – details conveyed through contrast and value variations within each color.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nTwo‑color separation.\n\n🚫 NEGATIVE / EXCLUSION:\nNo full original palette, no many tonal families, no gradients.`,
                 '22': `VISUAL DIFFERENTIATOR:\nCompared to Paper Cut (stacked layers) and Collage (overlapping pieces), this style uses assembled cutout pieces with intentional overlaps.\n\n${base}Apply Collage Vector construction: assembled cutout pieces; intentional overlaps; varied scale; visible layer boundaries; mixed shape fragments; graphic depth created by stacking and intersection.\n\nSHAPE / SILHOUETTE:\nObject is broken into many irregular, overlapping pieces of different sizes and scales.\n\nCOLOR SYSTEM:\nDiverse palette from reference, each piece a solid color.\n\nMATERIAL / DETAIL:\nHigh – many small pieces creating a mosaic effect.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSeparate pieces with clear boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo one‑piece flat redraw, no seamless unit.`,
                 '23': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (no gradients) and Premium Stock (tonal planes), this style uses purposeful smooth gradients inside shapes.\n\n${base}Apply Gradient Vector construction: crisp silhouettes with purposeful smooth gradients inside controlled shapes; modern dimensional color transitions; restrained highlight zones; clean boundaries.\n\nSHAPE / SILHOUETTE:\nSmooth, clean silhouettes with linear or radial gradients filling the shapes.\n\nCOLOR SYSTEM:\nColors from reference, blended across forms using gradients (e.g., light to dark).\n\nMATERIAL / DETAIL:\nMedium – gradients replace solid fields.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nGradients are smooth but contained within crisp boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo uncontrolled airbrushing, no photographic lighting, no excessive effects.`,

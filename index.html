@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VectorForge AI</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -20,21 +17,14 @@
             font-weight: 700;
             transition: all 0.2s;
         }
-        .btn-primary:hover:not(:disabled) {
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-primary:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .prompt-box {
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 1rem;
             font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             line-height: 1.6;
             white-space: pre-wrap;
             max-height: 400px;
@@ -85,14 +75,14 @@
 </head>
 <body class="gradient-bg text-slate-200 min-h-screen flex items-center justify-center p-4">
 
-    <!-- ========== INSTAGRAM FLOAT ========== -->
+    <!-- INSTAGRAM FLOAT -->
     <div class="instagram-float">
         <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" aria-label="Instagram Help Center">
             <i class="fab fa-instagram"></i>
         </a>
     </div>
 
-    <!-- ========== MAIN CONTAINER ========== -->
+    <!-- MAIN CONTAINER -->
     <div class="w-full max-w-2xl">
 
         <!-- ====== PASSWORD GATE ====== -->
@@ -122,11 +112,11 @@
             <div id="auth-err" class="text-rose-400 text-sm hidden">❌ Incorrect code. Please check your Payhip email or contact support via Instagram DM.</div>
 
             <div class="text-xs text-slate-500 text-center border-t border-slate-700 pt-3 mt-2">
-                <p>Having trouble? Check your Payhip email or DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a> on Instagram.</p>
+                Having trouble? Check your Payhip email or DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a> on Instagram.
             </div>
         </div>
 
-        <!-- ====== TOOLS (hidden until login) ====== -->
+        <!-- ====== TOOLS ====== -->
         <div id="tool-box" class="hidden space-y-5">
 
             <!-- STEP 1: UPLOAD -->
@@ -179,7 +169,7 @@
                 <span>⚡ Generate Prompt</span>
             </button>
 
-            <!-- OUTPUT BOX -->
+            <!-- OUTPUT -->
             <div id="output-box" class="card p-5 space-y-3 hidden fade-in">
                 <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                     <h3 class="text-sm font-bold">📋 Production Prompt</h3>
@@ -188,15 +178,12 @@
                         <i class="fas fa-copy mr-1"></i> Copy
                     </button>
                 </div>
-                <!-- Loading animation (hidden by default) -->
                 <div id="loading-area" class="hidden py-6 text-center">
                     <div class="loader"></div>
                     <p class="text-sm text-slate-400 mt-3">🧠 Analyzing image & crafting prompt...</p>
                 </div>
-                <!-- Prompt result -->
                 <textarea id="prompt-result" rows="12" readonly 
                           class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none prompt-box"></textarea>
-                <!-- Instructions after prompt -->
                 <div id="instructions" class="hidden text-sm text-slate-300 border-t border-slate-700 pt-3 space-y-1">
                     <p class="font-semibold text-amber-400">🛠️ How to generate your vector image:</p>
                     <ol class="list-decimal list-inside space-y-1 text-xs">
@@ -204,18 +191,16 @@
                         <li>Copy the entire prompt above and paste it into the image generator.</li>
                         <li>Generate and enjoy your vector artwork! 😊</li>
                     </ol>
-                    <p class="text-xs text-slate-500 mt-2">💡 The prompt is designed to work with any subject – just replace the placeholder descriptions if needed.</p>
+                    <p class="text-xs text-slate-500 mt-2">💡 The prompt works with any subject – no manual editing needed.</p>
                 </div>
             </div>
 
-        </div><!-- end tool-box -->
+        </div>
     </div>
 
     <script>
         // ==================== CONFIG ====================
         const APP_PASSWORD = "VFACCESS2026";
-
-        // ==================== STATE ====================
         let hasImage = false;
         let selectedStyle = "";
 
@@ -292,11 +277,10 @@
             }
         }
 
-        // ==================== GENERATE PROMPT (simulated) ====================
+        // ==================== GENERATE (simulated) ====================
         function generatePrompt() {
             if (!hasImage || selectedStyle === "") return;
 
-            // Show output box and loading
             outputBox.classList.remove('hidden');
             loadingArea.classList.remove('hidden');
             promptResult.value = '';
@@ -305,7 +289,6 @@
             btnRun.disabled = true;
             btnRun.innerHTML = '⏳ Processing...';
 
-            // Simulate 5 seconds "AI processing"
             setTimeout(() => {
                 loadingArea.classList.add('hidden');
                 const prompt = getPromptTemplate(selectedStyle);
@@ -317,83 +300,80 @@
             }, 5000);
         }
 
-        // ==================== COPY PROMPT ====================
+        // ==================== COPY ====================
         function copyPrompt() {
             const text = promptResult.value;
             if (!text) return;
             navigator.clipboard.writeText(text).then(() => {
                 copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-                }, 2000);
+                setTimeout(() => { copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy'; }, 2000);
             }).catch(() => {
                 promptResult.select();
                 document.execCommand('copy');
                 copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-                }, 2000);
+                setTimeout(() => { copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy'; }, 2000);
             });
         }
 
-        // ==================== 26 PROMPT TEMPLATES (UNIFORM STRUCTURE) ====================
+        // ==================== 26 PROMPT TEMPLATES (No placeholders, universal) ====================
         function getPromptTemplate(styleId) {
-            // Base structure – identical for every style, only the "SELECTED STYLE CONSTRUCTION" changes.
-            const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is [DESCRIBE YOUR SUBJECT]. Extract the main subject and any supporting elements (e.g., [list key details]).\n\nSUBJECT + SUPPORTING ELEMENTS:\n[Subject name] with [supporting elements].\n\nPRESERVATION:\nPreserve the recognizable silhouette, proportions, relative scale, orientation, and key color relationships of the original subject.\n\nSELECTED STYLE CONSTRUCTION:\n`;
+            const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is the main object or character visible in the image. Extract the primary subject and any distinct supporting elements that define its context.\n\nSUBJECT + SUPPORTING ELEMENTS:\nThe primary subject from the uploaded reference, along with its key supporting details (e.g., accessories, background elements that interact with it).\n\nPRESERVATION:\nPreserve the recognizable silhouette, overall proportions, relative scale, orientation, and dominant color relationships of the original reference.\n\nSELECTED STYLE CONSTRUCTION:\n`;
 
-            // Construction blueprint per style – only this part differs
-            const styleBlueprints = {
-                '01': `Clean Flat Vector: smooth natural silhouettes; solid fills with 2–4 controlled tones per major object; crisp boundaries; no gradients; medium‑low detail.`,
-                '02': `Minimal Vector: aggressive simplification; very few internal forms; large uninterrupted color areas; restrained palette (2–3 neutrals + 1 accent).`,
-                '03': `Geometric Vector: rebuild organic structures with circles, arcs, polygons, and angular segments; aligned edges; measured proportions.`,
-                '04': `Premium Stock Vector: 3 value planes (light, mid, dark) per object; no outlines; polished material cues; balanced dimensional depth.`,
-                '05': `Paper Cut Vector: 3–5 stacked offset layers; visible layer overlaps; crisp cut boundaries; shallow dimensional separation; coordinated paper‑color palette.`,
-                '06': `Isometric Vector: consistent isometric system (30°/150°/90° axes); top/front/side planes; parallel edges; controlled 3D‑like depth.`,
-                '07': `Low Poly Vector: flat polygonal facets covering major surfaces; angular silhouette; faceted tonal blocks; limited multi‑tone palette.`,
-                '08': `Monoline Vector: line‑first; consistent contour weight; limited fills; internal information expressed mainly through lines; open negative space.`,
-                '09': `Bold Poster Vector: oversized graphic shapes; large color fields; high contrast; simplified internal detail; strong visual hierarchy.`,
-                '10': `Sticker Vector: compact die‑cut silhouette; strong continuous outer contour (2–3px border); simplified interior; vivid controlled palette.`,
-                '11': `Cute Friendly Vector: rounded softened forms; slightly playful proportions; gentle curves; cheerful controlled palette; softened corners.`,
-                '12': `Mascot Vector: bold readable silhouette; slightly exaggerated rounded proportions; strong contour hierarchy; simplified expressive feature grouping; bold color blocking.`,
-                '13': `Hand‑Drawn Vector: clean vector shapes with organic contour variation; subtle asymmetry; controlled imperfect edges; restrained flat fills.`,
-                '14': `Editorial Vector: art‑directed abstraction; selective cropping‑like emphasis; elegant silhouette simplification; unusual but intentional shape relationships; restrained sophisticated palette.`,
-                '15': `Retro Commercial Vector: vintage advertising construction; bold contour shapes; limited warm palette; simplified color blocking; print‑era separations.`,
-                '16': `Mid‑Century Modern Vector: 1950s–60s organic geometry; simplified asymmetrical forms; confident curved primitives; muted coordinated palette; balanced asymmetry.`,
-                '17': `Luxury Line Vector: elegant sparse contour drawing; thin‑to‑medium controlled line hierarchy; selective minimal fills; refined negative space; premium restraint.`,
-                '18': `Organic Flat Vector: flowing natural silhouettes; soft irregular curves; gentle asymmetry; layered organic flat shapes; calm natural palette.`,
-                '19': `Infographic Vector: modular visual grammar; clearly separated information zones; consistent alignment; repeated modules; hierarchy through size and grouping.`,
-                '20': `Technical Vector: engineered construction; measured proportions; component separation; precise contours; sectional/diagram‑like clarity; disciplined alignment; restrained technical palette.`,
-                '21': `Duotone Vector: reduce to two dominant color families plus optional neutral support; strong tonal grouping; simplified shapes; graphic contrast.`,
-                '22': `Collage Vector: assembled cutout pieces; intentional overlaps; varied scale; visible layer boundaries; mixed shape fragments; graphic depth created by stacking and intersection.`,
-                '23': `Gradient Vector: crisp silhouettes with purposeful smooth gradients inside controlled shapes; modern dimensional color transitions; restrained highlight zones; clean boundaries.`,
-                '24': `Pop Graphic Vector: energetic contemporary shapes; punchy color contrasts; playful scale shifts; bold rhythm; graphic accents integrated into the subject.`,
-                '25': `Engraved Vector: etched contour construction; parallel hatch lines; crosshatching‑like tonal areas; line‑density modeling; traditional print illustration character; monochrome or restrained ink palette.`,
-                '26': `Pixel Grid Vector: hard‑edged grid logic; stepped silhouettes; block‑based internal shapes; limited palette; pixel‑scale rhythm; no smooth gradients; consistent grid units.`
+            const styleMap = {
+                '01': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (extreme reduction) and Premium Stock (tonal planes), this style emphasizes smooth, clean shapes with solid fills and crisp boundaries.\n\n${base}Apply Clean Flat Vector construction: smooth natural silhouettes; solid fills with 2–4 controlled tones per major object; crisp boundaries; no gradients or textures; medium‑low detail.\n\nSHAPE / SILHOUETTE:\nOrganic, smooth silhouettes without sharp corners. Use simple, recognizable contours.\n\nCOLOR SYSTEM:\nDerive dominant colors from the reference. Use 2–4 solid tones per object, maintaining clear separation between color areas.\n\nMATERIAL / DETAIL:\nKeep only essential details; remove photographic noise. Use solid color blocks to suggest material cues.\n\nISOLATED STOCK FORMAT:\nPure white #FFFFFF background, 1:1 square, centered composition, generous whitespace, full visibility.\n\nTRACE-FRIENDLY OUTPUT:\nClean silhouettes, crisp boundaries, separated color regions.\n\n🚫 NEGATIVE / EXCLUSION:\nNo gradients, no deep modeling, no decorative outlines, no texture, no photographic elements, no text, no watermark.`,
+
+                '02': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (more detail) and Geometric (primitive shapes), this style aggressively reduces the subject to only recognition‑critical shapes.\n\n${base}Apply Minimal Vector construction: extreme simplification; very few internal forms; large uninterrupted color areas; restrained palette (2–3 neutrals + 1 accent).\n\nSHAPE / SILHOUETTE:\nMaximum reduction – only the essential outer silhouette and one or two large internal fields.\n\nCOLOR SYSTEM:\nVery restrained: 2–3 neutral tones (e.g., gray, white, black) plus one accent color from the reference.\n\nMATERIAL / DETAIL:\nNo detail; only large color areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF background, 1:1, centered, spacious.\n\nTRACE-FRIENDLY OUTPUT:\nVery simple shapes, easy to trace.\n\n🚫 NEGATIVE / EXCLUSION:\nNo medium/high detail, no multiple highlights, no decorative elements, no textures.`,
+
+                '03': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (organic) and Minimal (reduced), this style rebuilds the subject using circles, arcs, polygons, and angular segments.\n\n${base}Apply Geometric Vector construction: rebuild organic structures with geometric primitives; aligned edges; measured proportions; repeated geometric logic.\n\nSHAPE / SILHOUETTE:\nEverything is constructed from circles, squares, triangles, trapezoids, and straight lines. No organic curves.\n\nCOLOR SYSTEM:\n3–5 solid colors with high contrast; colors derived from reference but simplified.\n\nMATERIAL / DETAIL:\nMedium detail – mechanical, precise, with visible geometric facets.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, straight edges and regular curves.\n\n🚫 NEGATIVE / EXCLUSION:\nNo random organic contours, no painterly curves, no gradients.`,
+
+                '04': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (solid) and Premium Stock (tonal), this style adds sophisticated layered modeling with highlight/shadow planes.\n\n${base}Apply Premium Stock Vector construction: 3 value planes (light, mid, dark) per object; no outlines; polished material cues; balanced dimensional depth.\n\nSHAPE / SILHOUETTE:\nSmooth, commercially realistic silhouettes with subtle contour variations.\n\nCOLOR SYSTEM:\nRich palette from reference, with 3–5 tones per object to create volume.\n\nMATERIAL / DETAIL:\nMedium‑high detail: reflections, folds, subtle textures – all rendered as solid planes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered, whitespace.\n\nTRACE-FRIENDLY OUTPUT:\nClean separated value planes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo flat icon treatment, no CGI gloss, no photographic texture.`,
+
+                '05': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (single layer) and Premium Stock (tonal), this style creates depth through stacked paper‑like cut layers.\n\n${base}Apply Paper Cut Vector construction: 3–5 stacked offset layers; visible layer overlaps; crisp cut boundaries; shallow dimensional separation; coordinated paper‑color palette.\n\nSHAPE / SILHOUETTE:\nSimple organic shapes with sharp cut edges; each layer is a separate piece.\n\nCOLOR SYSTEM:\nCoordinated paper‑like colors (e.g., pastel or muted solids from reference), with each layer slightly different.\n\nMATERIAL / DETAIL:\nShow layer overlaps and drop shadows (simulated by offset).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSeparate layers with clear boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo realistic paper fibers, no soft 3D rendering, no gradients.`,
+
+                '06': `VISUAL DIFFERENTIATOR:\nCompared to Geometric (flat primitives) and Technical (engineered), this style uses a consistent isometric spatial system.\n\n${base}Apply Isometric Vector construction: consistent 30°/150°/90° axes; top/front/side planes; parallel edges; controlled 3D‑like depth.\n\nSHAPE / SILHOUETTE:\nAll planes flat and aligned to isometric axes. No perspective distortion.\n\nCOLOR SYSTEM:\n3–5 solid colors; each plane (top, front, side) has a different value (e.g., top lightest, side darkest).\n\nMATERIAL / DETAIL:\nMedium detail with repeating isometric elements.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, straight lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo ordinary perspective, no mixed viewpoints, no curved lines.`,
+
+                '07': `VISUAL DIFFERENTIATOR:\nCompared to Geometric (primitives) and Premium Stock (smooth), this style uses deliberate polygonal facets.\n\n${base}Apply Low Poly Vector construction: flat polygonal facets covering major surfaces; angular silhouette; faceted tonal blocks; limited multi‑tone palette.\n\nSHAPE / SILHOUETTE:\nAll curves replaced by triangles or simple polygons. Facet edges are visible.\n\nCOLOR SYSTEM:\n4–8 colors from reference, with value shifts between facets.\n\nMATERIAL / DETAIL:\nMedium detail – facets are large enough to be readable.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear polygonal faces.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth rounded modeling, no excessive tiny triangles, no gradients.`,
+
+                '08': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (flat fields) and Luxury Line (thin lines), this style is line‑first with consistent contour weight.\n\n${base}Apply Monoline Vector construction: line‑first; consistent contour weight; limited fills; internal information expressed mainly through lines; open negative space.\n\nSHAPE / SILHOUETTE:\nContours and internal lines are drawn with a single uniform line weight. Minimal fills.\n\nCOLOR SYSTEM:\nBlack/white or one line color plus one light fill.\n\nMATERIAL / DETAIL:\nLow detail – information conveyed through lines, not shading.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear, continuous lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo heavy filled modeling, no complex shading, no multiple line weights.`,
+
+                '09': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (detailed) and Minimal (subtle), this style uses oversized graphic silhouettes and high contrast.\n\n${base}Apply Bold Poster Vector construction: oversized graphic shapes; large color fields; high contrast; simplified internal detail; strong visual hierarchy.\n\nSHAPE / SILHOUETTE:\nBold, iconic, readable at thumbnail size. Very few internal shapes.\n\nCOLOR SYSTEM:\n2–4 high‑contrast colors (e.g., black, white, red, yellow) derived from reference but pushed to extremes.\n\nMATERIAL / DETAIL:\nExtremely low – only main silhouette and large decorative accents.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nLarge color blocks.\n\n🚫 NEGATIVE / EXCLUSION:\nNo delicate detail, no subtle tonal modeling, no gradients.`,
+
+                '10': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (open) and Bold Poster (large blocks), this style adds a thick continuous outer border.\n\n${base}Apply Sticker Vector construction: compact die‑cut silhouette; strong continuous outer contour (2–3px border); simplified interior; vivid controlled palette.\n\nSHAPE / SILHOUETTE:\nCompact, with a thick outline surrounding the entire shape. Interior is simplified.\n\nCOLOR SYSTEM:\nBright, vivid colors (max 4).\n\nMATERIAL / DETAIL:\nLow‑medium – key details kept, but everything is inside the border.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear border, simple interior.\n\n🚫 NEGATIVE / EXCLUSION:\nNo sparse editorial spacing, no deep dimensional rendering.`,
+
+                '11': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (sharp) and Minimal (austere), this style uses rounded, soft, playful forms.\n\n${base}Apply Cute Friendly Vector construction: rounded softened forms; slightly playful proportions; gentle curves; cheerful controlled palette; softened corners.\n\nSHAPE / SILHOUETTE:\nAll corners rounded; curves are gentle; proportions may be slightly exaggerated (e.g., bigger head if character).\n\nCOLOR SYSTEM:\nWarm, cheerful, pastel or bright palette from reference, with low contrast.\n\nMATERIAL / DETAIL:\nLow detail – focus on main shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, rounded shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo harsh angular construction, no aggressive contrast.`,
+
+                '12': `VISUAL DIFFERENTIATOR:\nCompared to Cute Friendly (soft) and Bold Poster (flat), this style gives a characterful, energetic silhouette.\n\n${base}Apply Mascot Vector construction: bold readable silhouette; slightly exaggerated rounded proportions; strong contour hierarchy; simplified but expressive feature grouping; bold color blocking.\n\nSHAPE / SILHOUETTE:\nDynamic, bold, with emphasis on silhouette readability. Proportions may be slightly exaggerated for personality.\n\nCOLOR SYSTEM:\nSaturated colors, high contrast, 3–5 colors.\n\nMATERIAL / DETAIL:\nMedium – expressive features and accents are emphasized.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear bold shapes with thick outlines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo generic flat product redraw, no tiny detail, no anthropomorphic additions unless present in reference.`,
+
+                '13': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (perfect lines) and Organic Flat (smooth), this style shows deliberate organic contour variation.\n\n${base}Apply Hand‑Drawn Vector construction: clean vector shapes with intentionally organic contour variation; subtle asymmetry; controlled imperfect edges; restrained flat fills.\n\nSHAPE / SILHOUETTE:\nImperfect, slightly wobbly lines; corners are not perfectly sharp; organic feel.\n\nCOLOR SYSTEM:\nSolid, limited palette (like colored pencil or ink).\n\nMATERIAL / DETAIL:\nMedium – details are drawn with lines, not filled areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nIrregular but clean lines.\n\n🚫 NEGATIVE / EXCLUSION:\nNo random wobble, no sketch noise, no watercolor texture, no perfect symmetry.`,
+
+                '14': `VISUAL DIFFERENTIATOR:\nCompared to Editorial (abstract) and Minimal (simple), this style uses art‑directed abstraction and selective emphasis.\n\n${base}Apply Editorial Vector construction: art‑directed abstraction; selective cropping‑like emphasis; elegant silhouette simplification; unusual but intentional shape relationships; restrained sophisticated palette.\n\nSHAPE / SILHOUETTE:\nSimplified, often with implied cropping; shapes may extend beyond frame; negative space is used intentionally.\n\nCOLOR SYSTEM:\nSophisticated palette (e.g., monochrome + one accent) from reference.\n\nMATERIAL / DETAIL:\nLow‑medium – only essential details.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, thoughtful shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo childish treatment, no uniform icon geometry, no photorealistic depth.`,
+
+                '15': `VISUAL DIFFERENTIATOR:\nCompared to Mid‑Century (organic) and Bold Poster (modern), this style evokes vintage advertising.\n\n${base}Apply Retro Commercial Vector construction: vintage advertising construction; bold contour shapes; limited warm palette; simplified color blocking; print‑era separations; slightly nostalgic graphic proportions.\n\nSHAPE / SILHOUETTE:\nBold, with thick outlines and simple, blocky shapes. Use halftone dots or parallel lines as decoration.\n\nCOLOR SYSTEM:\nWarm vintage palette: cream, red, navy, mint green, mustard – solid colors.\n\nMATERIAL / DETAIL:\nMedium – includes decorative elements like stars, stripes, geometric frames.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClear, bold shapes with retro accents.\n\n🚫 NEGATIVE / EXCLUSION:\nNo modern glossy gradients, no photorealism, no contemporary fonts.`,
+
+                '16': `VISUAL DIFFERENTIATOR:\nCompared to Retro Commercial (bold) and Organic Flat (flowing), this style uses 1950s–60s organic geometry with muted colors.\n\n${base}Apply Mid‑Century Modern Vector construction: 1950s–60s organic geometry; simplified asymmetrical forms; confident curved primitives; muted coordinated palette; balanced asymmetry.\n\nSHAPE / SILHOUETTE:\nOrganic curves, often asymmetrical; use half‑circles, arcs, and flowing lines. No sharp corners.\n\nCOLOR SYSTEM:\nMuted palette: teal, mustard, coral, cream, olive – solid colors.\n\nMATERIAL / DETAIL:\nLow – large, elegant shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo generic modern flat art, no excessive detail, no harsh contrasts.`,
+
+                '17': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (uniform line) and Luxury Line (thin), this style is sparse, elegant, with thin‑to‑medium line hierarchy.\n\n${base}Apply Luxury Line Vector construction: elegant sparse contour drawing; thin‑to‑medium controlled line hierarchy; selective minimal fills; refined negative space; premium restraint.\n\nSHAPE / SILHOUETTE:\nForms are drawn with flowing, thin lines (0.5‑1pt). Fills are minimal or transparent.\n\nCOLOR SYSTEM:\nMonochrome (gold, silver, black, white) or refined solid colors.\n\nMATERIAL / DETAIL:\nLow – details conveyed through fine lines.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nElegant, precise linework.\n\n🚫 NEGATIVE / EXCLUSION:\nNo heavy outlines, no dense color blocking, no photorealistic shading.`,
+
+                '18': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (structured) and Mid‑Century (geometric), this style uses flowing, nature‑mimicking shapes.\n\n${base}Apply Organic Flat Vector construction: flowing natural silhouettes; soft irregular curves; gentle asymmetry; layered organic flat shapes; calm natural palette.\n\nSHAPE / SILHOUETTE:\nNo straight lines – all shapes are curved and asymmetrical, like leaves, waves, or clouds.\n\nCOLOR SYSTEM:\nNatural palette: greens, browns, blues, creams – solid colors.\n\nMATERIAL / DETAIL:\nMedium – details like veins or organic patterns shown as shapes.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSmooth, flowing shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo rigid primitives, no hard technical edges, no geometric precision.`,
+
+                '19': `VISUAL DIFFERENTIATOR:\nCompared to Technical (engineering) and Infographic (modular), this style uses a modular visual grammar with separated information zones.\n\n${base}Apply Infographic Vector construction: modular visual grammar; clearly separated information zones; labeled‑shape logic (without text); consistent alignment; repeated modules; hierarchy through size and grouping.\n\nSHAPE / SILHOUETTE:\nObject is broken into distinct modules or components, each with its own frame or background.\n\nCOLOR SYSTEM:\nLimited palette with distinct colors for each module.\n\nMATERIAL / DETAIL:\nHigh – each component is visually labeled (using shapes, not text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nClean, organized modules.\n\n🚫 NEGATIVE / EXCLUSION:\nNo decorative chaos, no painterly depth, no text.`,
+
+                '20': `VISUAL DIFFERENTIATOR:\nCompared to Isometric (spatial) and Infographic (modular), this style emphasizes engineered precision and component separation.\n\n${base}Apply Technical Vector construction: engineered construction; measured proportions; component separation; precise contours; sectional/diagram‑like clarity; disciplined alignment; restrained technical palette.\n\nSHAPE / SILHOUETTE:\nPrecise, measurable shapes; often includes cutaways, exploded views, or dimension lines.\n\nCOLOR SYSTEM:\nTechnical palette: grays, blue, white, black.\n\nMATERIAL / DETAIL:\nHigh – details like bolts, joints, gaps, and labels (without text).\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSharp, precise lines and clear components.\n\n🚫 NEGATIVE / EXCLUSION:\nNo playful proportions, no soft organic treatment, no decorative elements.`,
+
+                '21': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (neutrals) and Clean Flat (full palette), this style strictly reduces to two dominant color families.\n\n${base}Apply Duotone Vector construction: reduce to two dominant color families plus optional neutral support; strong tonal grouping; simplified shapes; graphic contrast.\n\nSHAPE / SILHOUETTE:\nClear silhouettes with strong contrast between the two colors.\n\nCOLOR SYSTEM:\nExactly two dominant colors (e.g., blue + orange, black + red, etc.) plus white for background. No other colors.\n\nMATERIAL / DETAIL:\nMedium – details conveyed through contrast and value variations within each color.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nTwo‑color separation.\n\n🚫 NEGATIVE / EXCLUSION:\nNo full original palette, no many tonal families, no gradients.`,
+
+                '22': `VISUAL DIFFERENTIATOR:\nCompared to Paper Cut (stacked layers) and Collage (overlapping pieces), this style uses assembled cutout pieces with intentional overlaps.\n\n${base}Apply Collage Vector construction: assembled cutout pieces; intentional overlaps; varied scale; visible layer boundaries; mixed shape fragments; graphic depth created by stacking and intersection.\n\nSHAPE / SILHOUETTE:\nObject is broken into many irregular, overlapping pieces of different sizes and scales.\n\nCOLOR SYSTEM:\nDiverse palette from reference, each piece a solid color.\n\nMATERIAL / DETAIL:\nHigh – many small pieces creating a mosaic effect.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nSeparate pieces with clear boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo one‑piece flat redraw, no seamless unit.`,
+
+                '23': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (no gradients) and Premium Stock (tonal planes), this style uses purposeful smooth gradients inside shapes.\n\n${base}Apply Gradient Vector construction: crisp silhouettes with purposeful smooth gradients inside controlled shapes; modern dimensional color transitions; restrained highlight zones; clean boundaries.\n\nSHAPE / SILHOUETTE:\nSmooth, clean silhouettes with linear or radial gradients filling the shapes.\n\nCOLOR SYSTEM:\nColors from reference, blended across forms using gradients (e.g., light to dark).\n\nMATERIAL / DETAIL:\nMedium – gradients replace solid fields.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nGradients are smooth but contained within crisp boundaries.\n\n🚫 NEGATIVE / EXCLUSION:\nNo uncontrolled airbrushing, no photographic lighting, no excessive effects.`,
+
+                '24': `VISUAL DIFFERENTIATOR:\nCompared to Bold Poster (large blocks) and Pop Graphic (energetic), this style uses punchy colors, playful scale shifts, and high visual energy.\n\n${base}Apply Pop Graphic Vector construction: energetic contemporary shapes; punchy color contrasts; playful scale shifts; bold rhythm; graphic accents integrated into the subject.\n\nSHAPE / SILHOUETTE:\nBold, dynamic, with scale exaggerations and graphic elements like halftone dots, bursts, or diagonal stripes.\n\nCOLOR SYSTEM:\nBright, complementary contrasts (e.g., magenta + green, yellow + purple) – loud and unnatural.\n\nMATERIAL / DETAIL:\nMedium – includes decorative graphic accents.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nBold shapes with strong graphic accents.\n\n🚫 NEGATIVE / EXCLUSION:\nNo muted editorial restraint, no photorealistic depth, no subtle colors.`,
+
+                '25': `VISUAL DIFFERENTIATOR:\nCompared to Monoline (continuous lines) and Engraved (hatched), this style uses etched contours with parallel hatch lines and crosshatching.\n\n${base}Apply Engraved Vector construction: etched contour construction; parallel hatch lines; crosshatching‑like tonal areas; line‑density modeling; traditional print illustration character; monochrome or restrained ink palette.\n\nSHAPE / SILHOUETTE:\nAll forms are built from parallel or cross‑hatched lines. No solid fills – only line density creates tone.\n\nCOLOR SYSTEM:\nBlack/white or single ink color.\n\nMATERIAL / DETAIL:\nHigh – many lines creating texture and depth.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nOrganized linework.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth digital gradients, no filled glossy shading, no solid areas.`,
+
+                '26': `VISUAL DIFFERENTIATOR:\nCompared to Low Poly (facets) and Geometric (primitives), this style uses hard‑edged grid logic with stepped silhouettes.\n\n${base}Apply Pixel Grid Vector construction: hard‑edged grid logic; stepped silhouettes; block‑based internal shapes; limited palette; pixel‑scale rhythm; no smooth gradients; consistent grid units.\n\nSHAPE / SILHOUETTE:\nEvery curve is replaced by stepped blocks (pixels). Silhouette is jagged and blocky.\n\nCOLOR SYSTEM:\nLimited palette (similar to duotone or 4 colors).\n\nMATERIAL / DETAIL:\nLow‑medium – depends on grid size; all shapes are square blocks.\n\nISOLATED STOCK FORMAT:\n#FFFFFF, 1:1, centered.\n\nTRACE-FRIENDLY OUTPUT:\nGrid‑based block shapes.\n\n🚫 NEGATIVE / EXCLUSION:\nNo smooth vector curves, no gradients, no organic shapes.`
             };
 
-            // Fallback if style not found
-            const blueprint = styleBlueprints[styleId] || styleBlueprints['01'];
-
-            // Complete prompt – all sections are identical except the construction line
-            return base + blueprint + `
-
-SHAPE / SILHOUETTE:
-[Describe the specific silhouette and shape language required by the style, e.g., smooth, geometric, faceted, etc.]
-
-COLOR SYSTEM:
-Derive dominant and accent colors from the reference image. Use [describe color treatment, e.g., solid blocks, limited palette, gradient transitions, etc.].
-
-MATERIAL / DETAIL:
-Preserve recognition‑critical material cues (e.g., rims, grooves, folds, markings) through controlled vector shapes. Remove photographic noise and microscopic texture.
-
-ISOLATED STOCK FORMAT:
-Pure white #FFFFFF background, centered 1:1 composition, generous whitespace, full visibility. Remove any studio/background context.
-
-TRACE‑FRIENDLY OUTPUT:
-Clean silhouettes, crisp boundaries, separated color regions, intentional overlaps, and controlled detail.
-
-🚫 NEGATIVE / EXCLUSION:
-No unwanted background, no photorealism, no photographic texture, no clutter, no text, no logos, no watermarks, no invented objects, no cropping of the main subject.`;
+            return styleMap[styleId] || styleMap['01'];
         }
     </script>
 </body>

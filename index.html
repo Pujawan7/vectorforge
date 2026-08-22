@@ -91,6 +91,8 @@
         }
         .style-desc strong { color: #f59e0b; }
         .style-desc span { color: #94a3b8; font-size: 0.8rem; }
+        .copy-btn { transition: 0.2s; }
+        .copy-btn.copied { background: #10b981; color: white; border-color: #10b981; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4">
@@ -147,7 +149,7 @@
                 <button class="tab-btn" data-tab="tab4" onclick="switchTab('tab4')">🏷️ Logo Generator</button>
             </div>
 
-            <!-- TAB 1: IMAGE TO PROMPT (sama seperti sebelumnya) -->
+            <!-- TAB 1: IMAGE TO PROMPT -->
             <div id="tab1" class="tab-content">
                 <div class="grid md:grid-cols-5 gap-5">
                     <div class="md:col-span-2 space-y-4">
@@ -199,7 +201,7 @@
                         <div id="output-box" class="card p-5 space-y-3 hidden fade-in">
                             <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                                 <h3 class="text-sm font-bold">📋 Production Prompt</h3>
-                                <button onclick="copyPrompt()" id="btn-copy" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition">
+                                <button onclick="copyText('prompt-result', this)" id="btn-copy" class="copy-btn text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition">
                                     <i class="fas fa-copy mr-1"></i> Copy
                                 </button>
                             </div>
@@ -234,7 +236,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: PROMPT ENHANCER (tetap) -->
+            <!-- TAB 2: PROMPT ENHANCER -->
             <div id="tab2" class="tab-content hidden">
                 <div class="card p-6 space-y-4 max-w-2xl mx-auto">
                     <h3 class="text-lg font-bold">✍️ Prompt Enhancer</h3>
@@ -273,14 +275,14 @@
                     <div id="enhance-output" class="hidden space-y-3">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-2">
                             <span class="text-sm font-semibold">📋 Enhanced Prompt</span>
-                            <button onclick="copyText('enhance-result')" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1 rounded-lg border border-slate-600">Copy</button>
+                            <button onclick="copyText('enhance-result', this)" class="copy-btn text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1 rounded-lg border border-slate-600">Copy</button>
                         </div>
                         <textarea id="enhance-result" rows="10" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 prompt-box"></textarea>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 3: STYLE REFERENCE (diperbaiki, deskripsi jelas) -->
+            <!-- TAB 3: STYLE REFERENCE -->
             <div id="tab3" class="tab-content hidden">
                 <div class="card p-6 space-y-4">
                     <h3 class="text-lg font-bold">📚 Style Reference</h3>
@@ -316,7 +318,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: LOGO GENERATOR (fitur baru) -->
+            <!-- TAB 4: LOGO GENERATOR -->
             <div id="tab4" class="tab-content hidden">
                 <div class="card p-6 space-y-4 max-w-2xl mx-auto">
                     <h3 class="text-lg font-bold">🏷️ Logo Prompt Generator</h3>
@@ -350,7 +352,7 @@
                     <div id="logo-output" class="hidden space-y-3">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-2">
                             <span class="text-sm font-semibold">📋 Logo Prompt</span>
-                            <button onclick="copyText('logo-result')" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1 rounded-lg border border-slate-600">Copy</button>
+                            <button onclick="copyText('logo-result', this)" class="copy-btn text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1 rounded-lg border border-slate-600">Copy</button>
                         </div>
                         <textarea id="logo-result" rows="10" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 prompt-box"></textarea>
                     </div>
@@ -510,10 +512,56 @@
             }, 1500);
         }
 
-        // ==================== 26 PROMPT TEMPLATES (LENGKAP) ====================
+        // ==================== COPY (UNIVERSAL & RELIABLE) ====================
+        function copyText(elementId, btnElement) {
+            const textarea = document.getElementById(elementId);
+            if (!textarea || !textarea.value) return;
+            
+            // Use modern clipboard API if available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textarea.value).then(() => {
+                    showCopiedFeedback(btnElement);
+                }).catch(() => {
+                    // fallback
+                    fallbackCopy(textarea, btnElement);
+                });
+            } else {
+                fallbackCopy(textarea, btnElement);
+            }
+        }
+
+        function fallbackCopy(textarea, btnElement) {
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                showCopiedFeedback(btnElement);
+            } catch (e) {
+                alert('Unable to copy. Please select and copy manually.');
+            }
+        }
+
+        function showCopiedFeedback(btnElement) {
+            if (!btnElement) {
+                // Try to find the button in the same container
+                const parent = btnElement?.closest('.flex') || document;
+                const btn = parent?.querySelector('.copy-btn');
+                if (btn) btnElement = btn;
+            }
+            if (btnElement) {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = '✅ Copied!';
+                btnElement.classList.add('copied');
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                    btnElement.classList.remove('copied');
+                }, 2000);
+            }
+        }
+
+        // ==================== 26 PROMPT TEMPLATES ====================
         function getPromptTemplate(styleId) {
             const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is the main object or character visible in the image. Extract the primary subject and any distinct supporting elements that define its context.\n\nSUBJECT + SUPPORTING ELEMENTS:\nThe primary subject from the uploaded reference, along with its key supporting details (e.g., accessories, background elements that interact with it).\n\nPRESERVATION:\nPreserve the recognizable silhouette, overall proportions, relative scale, orientation, and dominant color relationships of the original reference.\n\nSELECTED STYLE CONSTRUCTION:\n`;
-
             const styleMap = {
                 '01': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (extreme reduction) and Premium Stock (tonal planes), this style emphasizes smooth, clean shapes with solid fills and crisp boundaries.\n\n${base}Apply Clean Flat Vector construction: smooth natural silhouettes; solid fills with 2–4 controlled tones per major object; crisp boundaries; no gradients or textures; medium‑low detail.\n\nSHAPE / SILHOUETTE:\nOrganic, smooth silhouettes without sharp corners. Use simple, recognizable contours.\n\nCOLOR SYSTEM:\nDerive dominant colors from the reference. Use 2–4 solid tones per object, maintaining clear separation between color areas.\n\nMATERIAL / DETAIL:\nKeep only essential details; remove photographic noise. Use solid color blocks to suggest material cues.\n\nISOLATED STOCK FORMAT:\nPure white #FFFFFF background, 1:1 square, centered composition, generous whitespace, full visibility.\n\nTRACE-FRIENDLY OUTPUT:\nClean silhouettes, crisp boundaries, separated color regions.\n\n🚫 NEGATIVE / EXCLUSION:\nNo gradients, no deep modeling, no decorative outlines, no texture, no photographic elements, no text, no watermark.`,
                 '02': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (more detail) and Geometric (primitive shapes), this style aggressively reduces the subject to only recognition‑critical shapes.\n\n${base}Apply Minimal Vector construction: extreme simplification; very few internal forms; large uninterrupted color areas; restrained palette (2–3 neutrals + 1 accent).\n\nSHAPE / SILHOUETTE:\nMaximum reduction – only the essential outer silhouette and one or two large internal fields.\n\nCOLOR SYSTEM:\nVery restrained: 2–3 neutral tones (e.g., gray, white, black) plus one accent color from the reference.\n\nMATERIAL / DETAIL:\nNo detail; only large color areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF background, 1:1, centered, spacious.\n\nTRACE-FRIENDLY OUTPUT:\nVery simple shapes, easy to trace.\n\n🚫 NEGATIVE / EXCLUSION:\nNo medium/high detail, no multiple highlights, no decorative elements, no textures.`,

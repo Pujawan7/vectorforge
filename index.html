@@ -1,354 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VectorForge AI</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #0f172a, #1e293b); }
-        .card { background: #1e293b; border: 1px solid #334155; border-radius: 1.5rem; }
-        .btn-primary {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
-            color: #0f172a;
-            font-weight: 700;
-            transition: all 0.2s;
-        }
-        .btn-primary:hover:not(:disabled) {
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .prompt-box {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .instagram-float {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 999;
-        }
-        .instagram-float a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            border-radius: 50%;
-            color: white;
-            font-size: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-        }
-        .instagram-float a:hover { transform: scale(1.1); }
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #94a3b8;
-        }
-        .password-toggle:hover { color: #f59e0b; }
-        .loader {
-            border: 4px solid #334155;
-            border-top: 4px solid #f59e0b;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .fade-in { animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VectorForge AI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif}
+.gradient-bg{background:linear-gradient(135deg,#0f172a,#1e293b)}
+.card{background:#1e293b;border:1px solid #334155;border-radius:1.5rem}
+.btn-primary{background:linear-gradient(135deg,#f59e0b,#f97316);color:#0f172a;font-weight:700;transition:all .2s}
+.btn-primary:hover:not(:disabled){transform:scale(1.02);box-shadow:0 8px 25px rgba(245,158,11,0.3)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.prompt-box{background:#0f172a;border:1px solid #334155;border-radius:1rem;font-family:'Courier New',monospace;font-size:.8rem;line-height:1.6;white-space:pre-wrap;max-height:400px;overflow-y:auto}
+.instagram-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999}
+.instagram-float a{display:flex;align-items:center;justify-content:center;width:56px;height:56px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:50%;color:#fff;font-size:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:transform .2s}
+.instagram-float a:hover{transform:scale(1.1)}
+.password-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8}
+.password-toggle:hover{color:#f59e0b}
+.loader{border:4px solid #334155;border-top:4px solid #f59e0b;border-radius:50%;width:40px;height:40px;animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
 </head>
 <body class="gradient-bg text-slate-200 min-h-screen flex items-center justify-center p-4">
 
-    <!-- ========== INSTAGRAM FLOAT ========== -->
-    <div class="instagram-float">
-        <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" aria-label="Instagram Help Center">
-            <i class="fab fa-instagram"></i>
-        </a>
-    </div>
+<div class="instagram-float">
+<a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" aria-label="Instagram Help"><i class="fab fa-instagram"></i></a>
+</div>
 
-    <!-- ========== MAIN CONTAINER ========== -->
-    <div class="w-full max-w-2xl">
+<div class="w-full max-w-2xl">
 
-        <!-- ====== PASSWORD GATE ====== -->
-        <div id="auth-box" class="card p-6 md:p-8 shadow-2xl space-y-4">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center text-2xl font-black shadow-lg shadow-amber-500/20">⚡</div>
-                <div>
-                    <h1 class="text-2xl font-bold text-amber-400">VectorForge AI</h1>
-                    <p class="text-xs text-slate-400">Professional Prompt Studio</p>
-                </div>
-            </div>
-            <h2 class="text-lg font-semibold">🔐 Access for Purchasers</h2>
-            <p class="text-sm text-slate-400">Enter your Payhip access code to unlock the generator.</p>
+<!-- AUTH -->
+<div id="auth-box" class="card p-6 md:p-8 shadow-2xl space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center text-2xl font-black shadow-lg shadow-amber-500/20">⚡</div>
+<div><h1 class="text-2xl font-bold text-amber-400">VectorForge AI</h1><p class="text-xs text-slate-400">Professional Prompt Studio</p></div>
+</div>
+<h2 class="text-lg font-semibold">🔐 Access for Purchasers</h2>
+<p class="text-sm text-slate-400">Enter your Payhip access code.</p>
+<div class="relative">
+<input type="password" id="pass-input" placeholder="Enter your code..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 pr-12 text-sm text-white focus:outline-none focus:border-amber-500"/>
+<span class="password-toggle" onclick="togglePassword()"><i id="pass-eye" class="fas fa-eye"></i></span>
+</div>
+<button onclick="loginApp()" class="w-full btn-primary py-3 rounded-xl text-base">Unlock Tools</button>
+<div id="auth-err" class="text-rose-400 text-sm hidden">❌ Incorrect code. Check Payhip email or DM @rudy.pujawan.</div>
+<div class="text-xs text-slate-500 text-center border-t border-slate-700 pt-3 mt-2">Trouble? DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a> on Instagram.</div>
+</div>
 
-            <div class="relative">
-                <input type="password" id="pass-input" placeholder="Enter your code..." 
-                       class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 pr-12 text-sm text-white focus:outline-none focus:border-amber-500"/>
-                <span class="password-toggle" onclick="togglePassword()">
-                    <i id="pass-eye" class="fas fa-eye"></i>
-                </span>
-            </div>
+<!-- TOOLS -->
+<div id="tool-box" class="hidden space-y-5">
+<div class="card p-5 space-y-3">
+<h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">1.</span> Upload Reference Image</h3>
+<input type="file" id="img-input" accept="image/*" onchange="previewImg(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-amber-400 hover:file:bg-slate-600 cursor-pointer"/>
+<div id="preview-wrapper" class="hidden text-center pt-2"><img id="img-view" class="max-h-52 mx-auto rounded-xl border border-slate-700 object-contain shadow-md"/></div>
+</div>
 
-            <button onclick="loginApp()" class="w-full btn-primary py-3 rounded-xl text-base">
-                Unlock Tools
-            </button>
+<div class="card p-5 space-y-3">
+<h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">2.</span> Choose Vector Style (26)</h3>
+<select id="style-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+<option value="">-- Select a style --</option>
+<option value="01">01 — Clean Flat Vector</option><option value="02">02 — Minimal Vector</option>
+<option value="03">03 — Geometric Vector</option><option value="04">04 — Premium Stock Vector</option>
+<option value="05">05 — Paper Cut Vector</option><option value="06">06 — Isometric Vector</option>
+<option value="07">07 — Low Poly Vector</option><option value="08">08 — Monoline Vector</option>
+<option value="09">09 — Bold Poster Vector</option><option value="10">10 — Sticker Vector</option>
+<option value="11">11 — Cute Friendly Vector</option><option value="12">12 — Mascot Vector</option>
+<option value="13">13 — Hand-Drawn Vector</option><option value="14">14 — Editorial Vector</option>
+<option value="15">15 — Retro Commercial Vector</option><option value="16">16 — Mid-Century Modern Vector</option>
+<option value="17">17 — Luxury Line Vector</option><option value="18">18 — Organic Flat Vector</option>
+<option value="19">19 — Infographic Vector</option><option value="20">20 — Technical Vector</option>
+<option value="21">21 — Duotone Vector</option><option value="22">22 — Collage Vector</option>
+<option value="23">23 — Gradient Vector</option><option value="24">24 — Pop Graphic Vector</option>
+<option value="25">25 — Engraved Vector</option><option value="26">26 — Pixel Grid Vector</option>
+</select>
+</div>
 
-            <div id="auth-err" class="text-rose-400 text-sm hidden">❌ Incorrect code. Please check your Payhip email or contact support via Instagram DM.</div>
+<button id="btn-run" onclick="generatePrompt()" disabled class="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2"><span>⚡ Generate Prompt</span></button>
 
-            <div class="text-xs text-slate-500 text-center border-t border-slate-700 pt-3 mt-2">
-                <p>Having trouble? Check your Payhip email or DM <a href="https://www.instagram.com/rudy.pujawan?igsh=aGdpNm4ybmJnZHIw" target="_blank" class="text-amber-400 hover:underline">@rudy.pujawan</a> on Instagram.</p>
-            </div>
-        </div>
+<div id="output-box" class="card p-5 space-y-3 hidden fade-in">
+<div class="flex items-center justify-between border-b border-slate-700 pb-3">
+<h3 class="text-sm font-bold">📋 Production Prompt</h3>
+<button onclick="copyPrompt()" id="btn-copy" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition"><i class="fas fa-copy mr-1"></i> Copy</button>
+</div>
+<div id="loading-area" class="hidden py-6 text-center"><div class="loader"></div><p class="text-sm text-slate-400 mt-3">🧠 Analyzing image & crafting prompt...</p></div>
+<textarea id="prompt-result" rows="12" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none prompt-box"></textarea>
+<div id="instructions" class="hidden text-sm text-slate-300 border-t border-slate-700 pt-3 space-y-1">
+<p class="font-semibold text-amber-400">🛠️ How to generate your vector image:</p>
+<ol class="list-decimal list-inside space-y-1 text-xs">
+<li>Upload the <strong>same reference image</strong> to your chosen AI image generator (e.g., ChatGPT, Gemini, Flow, etc.).</li>
+<li>Copy the entire prompt above and paste it into the image generator.</li>
+<li>Generate and enjoy! 😊</li>
+</ol>
+<p class="text-xs text-slate-500 mt-2">💡 The prompt is designed to work with any subject – replace placeholder descriptions if needed.</p>
+</div>
+</div>
+</div>
+</div>
 
-        <!-- ====== TOOLS (hidden until login) ====== -->
-        <div id="tool-box" class="hidden space-y-5">
+<script>
+// ==================== CONFIG ====================
+const APP_PASSWORD = "VFACCESS2026";
+let hasImage = false, selectedStyle = "";
+const authBox = document.getElementById('auth-box');
+const toolBox = document.getElementById('tool-box');
+const passInput = document.getElementById('pass-input');
+const authErr = document.getElementById('auth-err');
+const imgInput = document.getElementById('img-input');
+const previewWrapper = document.getElementById('preview-wrapper');
+const imgView = document.getElementById('img-view');
+const styleSelect = document.getElementById('style-select');
+const btnRun = document.getElementById('btn-run');
+const outputBox = document.getElementById('output-box');
+const loadingArea = document.getElementById('loading-area');
+const promptResult = document.getElementById('prompt-result');
+const instructions = document.getElementById('instructions');
+const copyBtn = document.getElementById('btn-copy');
 
-            <!-- STEP 1: UPLOAD -->
-            <div class="card p-5 space-y-3">
-                <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">1.</span> Upload Reference Image</h3>
-                <input type="file" id="img-input" accept="image/*" onchange="previewImg(event)" 
-                       class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-amber-400 hover:file:bg-slate-600 cursor-pointer"/>
-                <div id="preview-wrapper" class="hidden text-center pt-2">
-                    <img id="img-view" class="max-h-52 mx-auto rounded-xl border border-slate-700 object-contain shadow-md"/>
-                </div>
-            </div>
+function togglePassword(){const i=passInput,e=document.getElementById('pass-eye');i.type==='password'?(i.type='text',e.className='fas fa-eye-slash'):(i.type='password',e.className='fas fa-eye')}
+function loginApp(){if(passInput.value.trim()===APP_PASSWORD){authBox.classList.add('hidden');toolBox.classList.remove('hidden');authErr.classList.add('hidden');updateGenerateButton()}else authErr.classList.remove('hidden')}
+function previewImg(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(ev)=>{imgView.src=ev.target.result;previewWrapper.classList.remove('hidden');hasImage=true;updateGenerateButton()};reader.readAsDataURL(file)}
+styleSelect.addEventListener('change',function(){selectedStyle=this.value;updateGenerateButton()});
+function updateGenerateButton(){if(hasImage&&selectedStyle!==''){btnRun.disabled=false;btnRun.innerHTML='<span>⚡ Generate Prompt</span>'}else{btnRun.disabled=true;btnRun.innerHTML='<span>⚡ Generate Prompt</span>'}}
 
-            <!-- STEP 2: SELECT STYLE -->
-            <div class="card p-5 space-y-3">
-                <h3 class="text-sm font-bold flex items-center gap-2"><span class="text-amber-400">2.</span> Choose Vector Style (26)</h3>
-                <select id="style-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
-                    <option value="">-- Select a style --</option>
-                    <option value="01">01 — Clean Flat Vector</option>
-                    <option value="02">02 — Minimal Vector</option>
-                    <option value="03">03 — Geometric Vector</option>
-                    <option value="04">04 — Premium Stock Vector</option>
-                    <option value="05">05 — Paper Cut Vector</option>
-                    <option value="06">06 — Isometric Vector</option>
-                    <option value="07">07 — Low Poly Vector</option>
-                    <option value="08">08 — Monoline Vector</option>
-                    <option value="09">09 — Bold Poster Vector</option>
-                    <option value="10">10 — Sticker Vector</option>
-                    <option value="11">11 — Cute Friendly Vector</option>
-                    <option value="12">12 — Mascot Vector</option>
-                    <option value="13">13 — Hand-Drawn Vector</option>
-                    <option value="14">14 — Editorial Vector</option>
-                    <option value="15">15 — Retro Commercial Vector</option>
-                    <option value="16">16 — Mid-Century Modern Vector</option>
-                    <option value="17">17 — Luxury Line Vector</option>
-                    <option value="18">18 — Organic Flat Vector</option>
-                    <option value="19">19 — Infographic Vector</option>
-                    <option value="20">20 — Technical Vector</option>
-                    <option value="21">21 — Duotone Vector</option>
-                    <option value="22">22 — Collage Vector</option>
-                    <option value="23">23 — Gradient Vector</option>
-                    <option value="24">24 — Pop Graphic Vector</option>
-                    <option value="25">25 — Engraved Vector</option>
-                    <option value="26">26 — Pixel Grid Vector</option>
-                </select>
-            </div>
+function generatePrompt(){if(!hasImage||selectedStyle==='')return;outputBox.classList.remove('hidden');loadingArea.classList.remove('hidden');promptResult.value='';instructions.classList.add('hidden');copyBtn.innerHTML='<i class="fas fa-copy mr-1"></i> Copy';btnRun.disabled=true;btnRun.innerHTML='⏳ Processing...';setTimeout(()=>{loadingArea.classList.add('hidden');promptResult.value=getPromptTemplate(selectedStyle);instructions.classList.remove('hidden');btnRun.disabled=false;btnRun.innerHTML='<span>⚡ Generate Prompt</span>';copyBtn.innerHTML='<i class="fas fa-copy mr-1"></i> Copy'},5000)}
+function copyPrompt(){const text=promptResult.value;if(!text)return;navigator.clipboard.writeText(text).then(()=>{copyBtn.innerHTML='✅ Copied!';setTimeout(()=>{copyBtn.innerHTML='<i class="fas fa-copy mr-1"></i> Copy'},2000)}).catch(()=>{promptResult.select();document.execCommand('copy');copyBtn.innerHTML='✅ Copied!';setTimeout(()=>{copyBtn.innerHTML='<i class="fas fa-copy mr-1"></i> Copy'},2000)})}
 
-            <!-- GENERATE BUTTON -->
-            <button id="btn-run" onclick="generatePrompt()" disabled
-                    class="w-full btn-primary py-4 rounded-xl text-lg flex items-center justify-center gap-2">
-                <span>⚡ Generate Prompt</span>
-            </button>
-
-            <!-- OUTPUT BOX -->
-            <div id="output-box" class="card p-5 space-y-3 hidden fade-in">
-                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-                    <h3 class="text-sm font-bold">📋 Production Prompt</h3>
-                    <button onclick="copyPrompt()" id="btn-copy" 
-                            class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-400 px-3 py-1.5 rounded-lg border border-slate-600 transition">
-                        <i class="fas fa-copy mr-1"></i> Copy
-                    </button>
-                </div>
-                <!-- Loading animation (hidden by default) -->
-                <div id="loading-area" class="hidden py-6 text-center">
-                    <div class="loader"></div>
-                    <p class="text-sm text-slate-400 mt-3">🧠 Analyzing image & crafting prompt...</p>
-                </div>
-                <!-- Prompt result -->
-                <textarea id="prompt-result" rows="12" readonly 
-                          class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-300 focus:outline-none prompt-box"></textarea>
-                <!-- Instructions after prompt -->
-                <div id="instructions" class="hidden text-sm text-slate-300 border-t border-slate-700 pt-3 space-y-1">
-                    <p class="font-semibold text-amber-400">🛠️ How to generate your vector image:</p>
-                    <ol class="list-decimal list-inside space-y-1 text-xs">
-                        <li>Upload the <strong>same reference image</strong> to your chosen AI image generator (e.g., ChatGPT, Gemini, Flow, etc.).</li>
-                        <li>Copy the entire prompt above and paste it into the image generator.</li>
-                        <li>Generate and enjoy your vector artwork! 😊</li>
-                    </ol>
-                    <p class="text-xs text-slate-500 mt-2">💡 The prompt is designed to work with any subject – just replace the placeholder descriptions if needed.</p>
-                </div>
-            </div>
-
-        </div><!-- end tool-box -->
-    </div>
-
-    <script>
-        // ==================== CONFIG ====================
-        const APP_PASSWORD = "VFACCESS2026";
-
-        // ==================== STATE ====================
-        let isLoggedIn = false;
-        let hasImage = false;
-        let selectedStyle = "";
-
-        // ==================== DOM REFS ====================
-        const authBox = document.getElementById('auth-box');
-        const toolBox = document.getElementById('tool-box');
-        const passInput = document.getElementById('pass-input');
-        const authErr = document.getElementById('auth-err');
-        const imgInput = document.getElementById('img-input');
-        const previewWrapper = document.getElementById('preview-wrapper');
-        const imgView = document.getElementById('img-view');
-        const styleSelect = document.getElementById('style-select');
-        const btnRun = document.getElementById('btn-run');
-        const outputBox = document.getElementById('output-box');
-        const loadingArea = document.getElementById('loading-area');
-        const promptResult = document.getElementById('prompt-result');
-        const instructions = document.getElementById('instructions');
-        const copyBtn = document.getElementById('btn-copy');
-
-        // ==================== PASSWORD TOGGLE ====================
-        function togglePassword() {
-            const input = passInput;
-            const icon = document.getElementById('pass-eye');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fas fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fas fa-eye';
-            }
-        }
-
-        // ==================== LOGIN ====================
-        function loginApp() {
-            const pass = passInput.value.trim();
-            if (pass === APP_PASSWORD) {
-                authBox.classList.add('hidden');
-                toolBox.classList.remove('hidden');
-                isLoggedIn = true;
-                authErr.classList.add('hidden');
-                // Enable/disable generate button based on image+style
-                updateGenerateButton();
-            } else {
-                authErr.classList.remove('hidden');
-            }
-        }
-
-        // ==================== IMAGE PREVIEW ====================
-        function previewImg(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                imgView.src = event.target.result;
-                previewWrapper.classList.remove('hidden');
-                hasImage = true;
-                updateGenerateButton();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // ==================== STYLE CHANGE ====================
-        styleSelect.addEventListener('change', function() {
-            selectedStyle = this.value;
-            updateGenerateButton();
-        });
-
-        // ==================== UPDATE GENERATE BUTTON ====================
-        function updateGenerateButton() {
-            if (hasImage && selectedStyle !== "") {
-                btnRun.disabled = false;
-                btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
-            } else {
-                btnRun.disabled = true;
-                btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
-            }
-        }
-
-        // ==================== GENERATE PROMPT (simulated) ====================
-        function generatePrompt() {
-            if (!hasImage || selectedStyle === "") return;
-
-            // Show output box and loading
-            outputBox.classList.remove('hidden');
-            loadingArea.classList.remove('hidden');
-            promptResult.value = '';
-            instructions.classList.add('hidden');
-            copyBtn.textContent = '<i class="fas fa-copy mr-1"></i> Copy';
-            btnRun.disabled = true;
-            btnRun.innerHTML = '⏳ Processing...';
-
-            // Simulate 5 seconds "AI processing"
-            setTimeout(() => {
-                // Hide loading, show prompt
-                loadingArea.classList.add('hidden');
-                const prompt = getPromptTemplate(selectedStyle);
-                promptResult.value = prompt;
-                instructions.classList.remove('hidden');
-                btnRun.disabled = false;
-                btnRun.innerHTML = '<span>⚡ Generate Prompt</span>';
-                // Reset copy button text
-                copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-            }, 5000);
-        }
-
-        // ==================== COPY PROMPT ====================
-        function copyPrompt() {
-            const text = promptResult.value;
-            if (!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-                }, 2000);
-            }).catch(() => {
-                // fallback
-                promptResult.select();
-                document.execCommand('copy');
-                copyBtn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
-                }, 2000);
-            });
-        }
-
-        // ==================== 26 PROMPT TEMPLATES ====================
-        function getPromptTemplate(styleId) {
-            // Generic base – user will replace [DESCRIBE YOUR SUBJECT] and adjust colors if needed
-            const base = `REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image as the primary visual reference. The subject is [DESCRIBE YOUR SUBJECT]. Extract the main subject and any supporting elements (e.g., [list key details]).\n\nSUBJECT + SUPPORTING ELEMENTS:\n[Subject name] with [supporting elements].\n\nPRESERVATION:\nPreserve the recognizable silhouette, proportions, relative scale, orientation, and key color relationships of the original subject.\n\nSELECTED STYLE CONSTRUCTION:\n`;
-            const styleMap = {
-                '01': `VISUAL DIFFERENTIATOR:\nCompared to Minimal (extreme reduction) and Premium Stock (tonal planes), this style emphasizes smooth, clean shapes with solid fills and crisp boundaries.\n\n${base}Apply the Clean Flat Vector construction: smooth natural silhouettes; solid fills with 2–4 controlled tones per major object; crisp boundaries; no gradients or textures; medium‑low detail.\n\nSHAPE / SILHOUETTE:\nOrganic, smooth silhouettes without sharp corners. Use simple, recognizable contours.\n\nCOLOR SYSTEM:\nDerive dominant colors from the reference (e.g., [dominant colors]). Use 2–4 solid tones per object, maintaining clear separation.\n\nMATERIAL / DETAIL:\nKeep only essential details; remove photographic noise. Use solid color blocks to suggest material cues.\n\nISOLATED STOCK FORMAT:\nPure white #FFFFFF background, 1:1 square, centered composition, generous whitespace, full visibility.\n\nTRACE-FRIENDLY OUTPUT:\nClean silhouettes, crisp boundaries, separated color regions.\n\n🚫 NEGATIVE / EXCLUSION:\nNo gradients, no deep modeling, no decorative outlines, no texture, no photographic elements, no text, no watermark.`,
-
-                '02': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (more detail) and Geometric (primitive shapes), this style aggressively reduces the subject to only recognition‑critical shapes.\n\n${base}Apply Minimal Vector construction: extreme simplification; very few internal forms; large uninterrupted color areas; restrained palette (2–3 neutrals + 1 accent).\n\nSHAPE / SILHOUETTE:\nMaximum reduction – only the essential outer silhouette and one or two large internal fields.\n\nCOLOR SYSTEM:\nVery restrained: 2–3 neutral tones (e.g., gray, white, black) plus one accent color from the reference.\n\nMATERIAL / DETAIL:\nNo detail; only large color areas.\n\nISOLATED STOCK FORMAT:\n#FFFFFF background, 1:1, centered, spacious.\n\nTRACE-FRIENDLY OUTPUT:\nVery simple shapes, easy to trace.\n\n🚫 NEGATIVE / EXCLUSION:\nNo medium/high detail, no multiple highlights, no decorative elements, no textures.`,
-
-                '03': `VISUAL DIFFERENTIATOR:\nCompared to Clean Flat (organic) and Minimal (reduced), this style rebuilds the subject using circles, arcs, polygons, and angular segments.\n\n${base}Apply Geometric Vector construction: rebuild organic structures with geometric primitives; aligned edges; measured proportions; repeated geometric logic.\n\nSHAPE / SILHOUETTE:\nEverything is constructed from circles, squares, triangles, trapezoids, and straight lines. No organic curves.\n\nCOLOR SYSTEM:\n3–5 solid colors with high contrast; colors derived from reference but
+// ==================== 26 PROMPT TEMPLATES (compressed) ====================
+function getPromptTemplate(id){
+const base=`REFERENCE & VISUAL EXTRACTION:\nUse the uploaded image. Subject: [DESCRIBE YOUR SUBJECT]. Extract main subject and supporting elements.\n\nSUBJECT + SUPPORTING ELEMENTS:\n[Subject] with [details].\n\nPRESERVATION:\nPreserve silhouette, proportions, scale, orientation, key colors.\n\nSELECTED STYLE CONSTRUCTION:\n`;
+const t={
+'01':`${base}Clean Flat: smooth solid fills, 2–4 tones, crisp boundaries, no gradients.\nSHAPE: organic smooth.\nCOLOR: dominant colors from ref, 2–4 solid tones.\nMATERIAL: minimal.\nISOLATED: #FFFFFF, 1:1, centered, whitespace.\nTRACE: clean boundaries.\n🚫 NEGATIVE: no gradients, texture, outlines, text.`,
+'02':`${base}Minimal: extreme reduction, large color areas, 2–3 neutrals + accent.\nSHAPE: only essential silhouette + 1–2 internal fields.\nCOLOR: restrained (grays + one accent).\nMATERIAL: none.\nISOLATED: #FFFFFF, 1:1.\nTRACE: simple shapes.\n🚫 NEGATIVE: no detail, no highlights, no decor.`,
+'03':`${base}Geometric: rebuild with circles, arcs, polygons, angular segments.\nSHAPE: all curves → primitives.\nCOLOR: 3–5 solid high-contrast.\nMATERIAL: medium, mechanical.\nISOLATED: #FFFFFF, 1:1.\nTRACE: sharp edges.\n🚫 NEGATIVE: no organic curves, no gradients.`,
+'04':`${base}Premium Stock: 3 value planes (light/mid/dark), no outlines, polished.\nSHAPE: smooth, realistic.\nCOLOR: rich, 3–5 tones per object.\nMATERIAL: highlights, folds, textures as planes.\nISOLATED: #FFFFFF, 1:1.\nTRACE: clean value separation.\n🚫 NEGATIVE: no flat icon, no CGI gloss.`,
+'05':`${base}Paper Cut: 3–5 stacked offset layers, crisp cuts, shallow depth.\nSHAPE: organic with sharp cut edges.\nCOLOR: coordinated paper palette.\nMATERIAL: layer overlaps + drop shadows.\nISOLATED: #FFFFFF, 1:1.\nTRACE: separate layers.\n🚫 NEGATIVE: no gradients, no realistic paper fibers.`,
+'06':`${base}Isometric: consistent 30°/150°/90° axes, top/front/side planes.\nSHAPE: flat planes aligned to axes.\nCOLOR: 3–5 solids, each plane different value.\nMATERIAL: medium, repeating elements.\nISOLATED: #FFFFFF, 1:1.\nTRACE: straight lines.\n🚫 NEGATIVE: no perspective, no curves.`,
+'07':`${base}Low Poly: polygonal facets covering surfaces, angular.\nSHAPE: triangles/polygons, faceted.\nCOLOR: 4–8 colors, value shifts per facet.\nMATERIAL: medium.\nISOLATED: #FFFFFF, 1:1.\nTRACE: clear facets.\n🚫 NEGATIVE: no smooth modeling, no tiny triangles.`,
+'08':`${base}Monoline: consistent contour weight, minimal fills.\nSHAPE: line-first, single line weight.\nCOLOR: black/white or one line color + light fill.\nMATERIAL: none.\nISOLATED: #FFFFFF, 1:1.\nTRACE: continuous lines.\n🚫 NEGATIVE: no heavy fills, no shading.`,
+'09':`${base}Bold Poster: oversized graphic silhouettes, high contrast.\nSHAPE: bold, iconic, few internal shapes.\nCOLOR: 2–4 high-contrast.\nMATERIAL: minimal.\nISOLATED: #FFFFFF, 1:1.\nTRACE: large color blocks.\n🚫 NEGATIVE: no delicate detail, no gradients.`,
+'10':`${base}Sticker: compact die-cut, thick outer border (2–3px).\nSHAPE: compact with outline.\nCOLOR: bright, max 4 colors.\nMATERIAL: subtle highlight for glossy effect.\nISOLATED: #FFFFFF, 1:1.\nTRACE: clear border.\n🚫 NEGATIVE: no sparse spacing, no deep 3D.`,
+'11':`${base}Cute Friendly: rounded, soft, playful proportions.\nSHAPE: rounded corners, gentle curves.\nCOLOR: warm/pastel, low contrast.\nMATERIAL: soft.\nISOLATED: #FFFFFF, 1:1.\nTRACE: smooth rounded shapes.\n🚫 NEGATIVE: no harsh angles, no aggressive contrast.`,
+'12':`${base}Mascot: bold expressive silhouette, thick outlines, dynamic.\nSHAPE: energetic, slightly exaggerated.\nCOLOR: saturated, high contrast, 3–5 colors.\nMATERIAL: medium.\nISOLATED: #FFFFFF, 1:1.\nTRACE: bold shapes.\n🚫 NEGATIVE: no generic flat, no tiny detail, no invented anatomy.`,
+'13':`${base}Hand-Drawn: organic contour variation, slight asymmetry.\nSHAPE: imperfect, wobbly lines.\nCOLOR: solid limited palette.\nMATERIAL: line-drawn details.\nISOLATED: #FFFFFF, 1:1.\nTRACE: irregular but clean.\n🚫 NEGATIVE: no random wobble, no watercolor.`,
+'14':`${base}Editorial: art-directed abstraction, implied cropping.\nSHAPE: simplified, negative space.\nCOLOR: sophisticated (monochrome + accent).\nMATERIAL: minimal.\nISOLATED: #FFFFFF, 1:1.\nTRACE: thoughtful shapes.\n🚫 NEGATIVE: no childish, no uniform geometry.`,
+'15':`${base}Retro Commercial: vintage ad style, bold outlines, halftone accents.\nSHAPE: bold, blocky, retro.\nCOLOR: warm vintage palette.\nMATERIAL: decorative stripes/dots.\nISOLATED: #FFFFFF, 1:1.\nTRACE: clear bold shapes.\n🚫 NEGATIVE: no modern gradients, no photorealism.`,
+'16':`${base}Mid-Century Modern: 1950s–60s organic geometry, asymmetrical.\nSHAPE: flowing curves, no sharp corners.\nCOLOR: muted (teal, mustard, coral).\nMATERIAL: large shapes.\nISOLATED: #FFFFFF, 1:1.\nTRACE: smooth flowing shapes.\n🚫 NEGATIVE: no modern flat, no excessive detail.`,
+'17':`${base}Luxury Line: thin elegant contour lines (0.5–1pt), minimal fills.\nSHAPE: fine flowing lines, sparse.\nCOLOR: monochrome (gold/silver/black/white).\nMATERIAL: refined.\nISOLATED: #FFFFFF, 1:1.\nTRACE: precise linework.\n🚫 NEGATIVE: no heavy outlines, no dense color.`,
+'18':`${base}Organic Flat: flowing nature-mimicking shapes, no straight lines.\nSHAPE: asymmetrical curves.\nCOLOR: natural palette (greens, browns, blues).\nMATERIAL: organic patterns.\nISOLATED: #FFFFFF, 1:1.\nTRACE: smooth flowing shapes.\n🚫 NEGATIVE: no rigid primitives, no hard edges.`,
+'19':`${base}Infographic: modular grammar, separated zones, diagram style.\nSHAPE: broken into modules.\nCOLOR: distinct per module.\nMATERIAL: high detail, visual labels.\nISOLATED: #FFFFFF, 1:1.\nTRACE: organized modules.\n🚫 NEGATIVE: no decorative chaos, no text.`,
+'20':`${base}Technical: engineered precision, component separation.\nSHAPE: precise, measurable, exploded views.\nCOLOR: technical palette (grays, blue).\nMATERIAL: high detail (bolts, joints).\nISOLATED: #FFFFFF, 1:1.\nTRACE: sharp precise lines.\n🚫 NEGATIVE: no playful, no organic.`,
+'21':`${base}Duotone: strictly 2 color families + white.\nSHAPE: clear contrast between two colors.\nCOLOR: exactly two dominant colors.\nMATERIAL: medium.\nISOLATED: #FFFFFF, 1:1.\nTRACE: two-color separation.\n🚫 NEGATIVE: no full palette, no gradients.`,
+'22':`${base}Collage: assembled overlapping cut pieces, varied scale.\nSHAPE: irregular pieces, mosaic.\nCOLOR: diverse solid pieces.\nMATERIAL: high, many pieces.\nISOLATED: #FFFFFF, 1:1.\nTRACE: separate pieces.\n🚫 NEGATIVE: no one-piece flat redraw.`,
+'23':`${base}Gradient: crisp silhouettes with smooth gradients inside.\nSHAPE: clean, smooth.\nCOLOR: gradients from reference.\nMATERIAL: medium.\nISOLATED: #FFFFFF, 1:1.\nTRACE: smooth boundaries.\n🚫 NEGATIVE: no airbrush, no photographic lighting.`,
+'24':`${base}Pop Graphic: energetic, punchy colors, scale shifts.\nSHAPE: bold, dynamic, with halftone/bursts.\nCOLOR: complementary bright contrasts.\nMATERIAL: graphic accents.\nISOLATED: #FFFFFF, 1:1.\nTRACE: bold shapes.\n🚫 NEGATIVE: no muted, no photorealistic depth.`,
+'25':`${base}Engraved: etched contours, parallel hatch lines.\nSHAPE: line-density modeling, no solid fills.\nCOLOR: black/white.\nMATERIAL: high line texture.\nISOLATED: #FFFFFF, 1:1.\nTRACE: organized linework.\n🚫 NEGATIVE: no smooth gradients, no solid areas.`,
+'26':`${base}Pixel Grid: hard-edged grid, stepped silhouettes.\nSHAPE: pixel blocks, jagged.\nCOLOR: limited palette.\nMATERIAL: block-based.\nISOLATED: #FFFFFF, 1:1.\nTRACE: grid blocks.\n🚫 NEGATIVE: no smooth curves, no gradients.`
+};
+return t[id]||t['01'];
+}
+</script>
+</body>
+</html>
